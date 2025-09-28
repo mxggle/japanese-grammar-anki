@@ -24,3 +24,165 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Japanese text styling */
+.japanese-text {
+  font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Takao', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP', sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  color: #1a1a1a; /* Darker text color for better readability */
+}
+
+/* Ruby text (furigana) styling */
+ruby {
+  ruby-align: center;
+}
+
+rt {
+  font-size: 0.6em;
+  color: #666;
+  font-weight: normal;
+}
+
+/* Grammar formation styling matching convert_to_rich_formation.py */
+.grammar-connection {
+  font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  line-height: 1.6;
+  display: inline-block;
+}
+
+/* Grammar blocks */
+.g-block {
+  display: inline-block;
+  padding: 2px 6px;
+  margin: 0 1px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: white;
+  vertical-align: baseline;
+}
+
+/* Word types */
+.wt-noun {
+  background-color: #8B4513; /* Saddle brown for nouns */
+}
+
+.wt-verb {
+  background-color: #228B22; /* Forest green for verbs */
+}
+
+.wt-i-adj {
+  background-color: #4169E1; /* Royal blue for i-adjectives */
+}
+
+.wt-na-adj {
+  background-color: #9932CC; /* Dark orchid for na-adjectives */
+}
+
+.wt-plain-form {
+  background-color: #FF6347; /* Tomato red for plain forms */
+}
+
+/* Conjugations */
+.conjugation {
+  background-color: #FF8C00; /* Dark orange for conjugations */
+}
+
+/* Particles */
+.particle {
+  background-color: #DC143C; /* Crimson for particles */
+}
+
+/* Grammar points */
+.grammar-point {
+  background-color: #2E8B57; /* Sea green for main grammar points */
+  color: white;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+/* Special だ transformations */
+.strikethrough-da {
+  text-decoration: line-through;
+  color: #888;
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.arrow {
+  color: #666;
+  font-weight: bold;
+  margin: 0 4px;
+}
+
+/* Grammar highlighting for simple patterns */
+.grammar-highlight {
+  background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* Card flip animation */
+.card-flip {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card-flip.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Text color improvements for better readability */
+.text-gray-800 {
+  color: #111827 !important;
+}
+
+.text-gray-700 {
+  color: #1f2937 !important;
+}
+
+.text-gray-600 {
+  color: #374151 !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.text-blue-100 {
+  color: #1e40af !important;
+}
+
+/* Ensure all text is dark enough */
+body, p, div, span {
+  color: inherit;
+}
+
+/* Card text specifically */
+.card-text {
+  color: #1f2937 !important;
+}
+
+.card-secondary-text {
+  color: #374151 !important;
+}
+
+/* Text shadow for better contrast on dark backgrounds */
+.text-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}

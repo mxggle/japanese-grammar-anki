@@ -1,0 +1,1775 @@
+[
+  {
+    "pattern": "～あげく",
+    "chinese_meaning": "",
+    "explanation_chinese": "做了各种……之后，最终变成了令人遗憾的结果。",
+    "grammar_formation": "名ーの・動ーた形 ＋あげく",
+    "style_notes": "",
+    "card_ids": [
+      "387",
+      "388",
+      "389"
+    ]
+  },
+  {
+    "pattern": "～あまり・あまりの～に",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为非常……，所以导致了不寻常的后果。",
+    "grammar_formation": "名ーの・動・形ー普通形肯定（ナ形だーな） ＋あまり\nあまりの＋名 ＋に",
+    "style_notes": "",
+    "card_ids": [
+      "310",
+      "311",
+      "312",
+      "313"
+    ]
+  },
+  {
+    "pattern": "～うちに",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为有时间限制，如果变得不……之后那就很难实现，所以要趁着在这之前完成。",
+    "grammar_formation": "名ーの・動ー辞書形/ている/ない形・イ形・ナ形 ＋うちに",
+    "style_notes": "",
+    "card_ids": [
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28"
+    ]
+  },
+  {
+    "pattern": "～おかげだ／～せいだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "由于……的影响，导致了希望出现的／不希望出现的结果。",
+    "grammar_formation": "名ーの・動・形ー普通形（ナ形だーな） ＋おかげだ／せいだ",
+    "style_notes": "",
+    "card_ids": [
+      "304",
+      "305",
+      "306",
+      "307",
+      "308",
+      "309"
+    ]
+  },
+  {
+    "pattern": "～おそれがある",
+    "chinese_meaning": "",
+    "explanation_chinese": "有可能发生坏的事情。书面语。",
+    "grammar_formation": "名ーの・動ー辞書形/ない形 ＋おそれがある",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "428",
+      "429",
+      "430",
+      "431"
+    ]
+  },
+  {
+    "pattern": "～かねない",
+    "chinese_meaning": "",
+    "explanation_chinese": "有可能变成……这种不希望出现的结果。",
+    "grammar_formation": "動ーます形 ＋かねない",
+    "style_notes": "",
+    "card_ids": [
+      "425",
+      "426",
+      "427"
+    ]
+  },
+  {
+    "pattern": "～かねる",
+    "chinese_meaning": "",
+    "explanation_chinese": "在这种情况下，那种条件下，或站在说话人的立场上，无法……。",
+    "grammar_formation": "動ーます形 ＋かねる",
+    "style_notes": "",
+    "card_ids": [
+      "345",
+      "346",
+      "347"
+    ]
+  },
+  {
+    "pattern": "～からして",
+    "chinese_meaning": "",
+    "explanation_chinese": "即使只抽取……这一个例子都是这样，所以整体来看当然如此。",
+    "grammar_formation": "名 ＋からして",
+    "style_notes": "",
+    "card_ids": [
+      "65",
+      "66",
+      "67",
+      "68"
+    ]
+  },
+  {
+    "pattern": "～からといって",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果仅是……这个理由的话，那么由此理由所引发的一般性的推测不能成立。",
+    "grammar_formation": "普通形 ＋からといって",
+    "style_notes": "",
+    "card_ids": [
+      "271",
+      "272",
+      "273"
+    ]
+  },
+  {
+    "pattern": "～からには・～以上（は）・～上は",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为……，所以做某事是理所当然的，或者想让别人做某事，或者自己打算做某事。",
+    "grammar_formation": "普通形（ナ形だーである・名だーである） ＋からには・以上（は）\n動ー辞書形/た形 ＋上は",
+    "style_notes": "",
+    "card_ids": [
+      "333",
+      "334",
+      "335",
+      "336",
+      "337",
+      "338"
+    ]
+  },
+  {
+    "pattern": "～か～ないかのうちに",
+    "chinese_meaning": "",
+    "explanation_chinese": "……结束的同时，发生下一件事情。",
+    "grammar_formation": "動ー辞書形/た形 ＋か＋動ーない形 ＋かのうちに",
+    "style_notes": "",
+    "card_ids": [
+      "16",
+      "17",
+      "18"
+    ]
+  },
+  {
+    "pattern": "～がたい",
+    "chinese_meaning": "",
+    "explanation_chinese": "做……很难，无法做到。",
+    "grammar_formation": "動ーます形 ＋がたい",
+    "style_notes": "",
+    "card_ids": [
+      "339",
+      "340",
+      "341"
+    ]
+  },
+  {
+    "pattern": "～きり",
+    "chinese_meaning": "",
+    "explanation_chinese": "……的动作之后，一直持续同一状态。",
+    "grammar_formation": "動ーた形 ＋きり",
+    "style_notes": "",
+    "card_ids": [
+      "383",
+      "384",
+      "385",
+      "386"
+    ]
+  },
+  {
+    "pattern": "～ぐらい・～くらい",
+    "chinese_meaning": "",
+    "explanation_chinese": "……程度轻，或最低程度。",
+    "grammar_formation": "名・動・形ー普通形（ナ形だーな） ＋ぐらい・くらい",
+    "style_notes": "",
+    "card_ids": [
+      "400",
+      "401",
+      "402"
+    ]
+  },
+  {
+    "pattern": "～ことだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "真是……。（表示吃惊、感动、讽刺等）",
+    "grammar_formation": "イ形・ナ形ーな ＋ことだ",
+    "style_notes": "",
+    "card_ids": [
+      "470",
+      "471",
+      "472",
+      "526",
+      "527",
+      "528"
+    ]
+  },
+  {
+    "pattern": "～ことだし",
+    "chinese_meaning": "",
+    "explanation_chinese": "虽也有其他理由，但总之是因为……而做某事。口语。",
+    "grammar_formation": "普通形（ナ形だーな/-である・名だーの/-である） ＋ことだし",
+    "style_notes": "話し言葉",
+    "card_ids": [
+      "317",
+      "318",
+      "319",
+      "320"
+    ]
+  },
+  {
+    "pattern": "～ことだろう・～ことか",
+    "chinese_meaning": "",
+    "explanation_chinese": "非常多地做（有）……，或者感到非常……。文章体用语。",
+    "grammar_formation": "疑問詞＋普通形（ナ形だーな/-である・名だーである） ＋ことだろう・ことか",
+    "style_notes": "",
+    "card_ids": [
+      "529",
+      "530",
+      "531"
+    ]
+  },
+  {
+    "pattern": "～ことはない",
+    "chinese_meaning": "",
+    "explanation_chinese": "没有必要做……。",
+    "grammar_formation": "動ー辞書形 ＋ことはない",
+    "style_notes": "",
+    "card_ids": [
+      "477",
+      "478",
+      "479"
+    ]
+  },
+  {
+    "pattern": "～さえ",
+    "chinese_meaning": "",
+    "explanation_chinese": "就连……这样极端的例子也如此，其他的就更不用说了。",
+    "grammar_formation": "名（＋助詞） ＋さえ",
+    "style_notes": "",
+    "card_ids": [
+      "413",
+      "414",
+      "415",
+      "416",
+      "417",
+      "418"
+    ]
+  },
+  {
+    "pattern": "～ざるを得ない",
+    "chinese_meaning": "",
+    "explanation_chinese": "虽然不想那样做，但因为没有办法只好做……。",
+    "grammar_formation": "動ーない形 ＋ざるを得ない ＊例外 する→せざるを得ない",
+    "style_notes": "",
+    "card_ids": [
+      "506",
+      "507",
+      "508",
+      "509"
+    ]
+  },
+  {
+    "pattern": "～しかない・～よりほかない",
+    "chinese_meaning": "",
+    "explanation_chinese": "除了……以外，没有其他选择、可能性、方法。",
+    "grammar_formation": "動ー辞書形 ＋しかない・よりほかない",
+    "style_notes": "",
+    "card_ids": [
+      "460",
+      "461",
+      "462"
+    ]
+  },
+  {
+    "pattern": "～ずじまいだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "心里想要做……，结果却没做成，或者没有……就结束了。",
+    "grammar_formation": "動ーない形 ＋ずじまいだ",
+    "style_notes": "",
+    "card_ids": [
+      "397",
+      "398",
+      "399"
+    ]
+  },
+  {
+    "pattern": "～たいものだ・～てほしいものだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "自己强烈地想……，或者强烈地想让别人做……。",
+    "grammar_formation": "動ーます形 ＋たいものだ\n動ーて形/ないで形 ＋ほしいものだ",
+    "style_notes": "",
+    "card_ids": [
+      "510",
+      "511",
+      "512",
+      "513"
+    ]
+  },
+  {
+    "pattern": "～たところ",
+    "chinese_meaning": "",
+    "explanation_chinese": "试着做了……，然后变成了某种结果或者明白了某种状态。",
+    "grammar_formation": "動ーた形 ＋ところ",
+    "style_notes": "",
+    "card_ids": [
+      "380",
+      "381",
+      "382"
+    ]
+  },
+  {
+    "pattern": "～たとたん（に）",
+    "chinese_meaning": "",
+    "explanation_chinese": "做了……之后，紧接着发生意外的事情。",
+    "grammar_formation": "動ーた形 ＋とたん（に）",
+    "style_notes": "",
+    "card_ids": [
+      "8",
+      "9",
+      "10",
+      "11"
+    ]
+  },
+  {
+    "pattern": "～だけ",
+    "chinese_meaning": "",
+    "explanation_chinese": "把某事做到……的极限范围。",
+    "grammar_formation": "動ー辞書形 ＋だけ",
+    "style_notes": "",
+    "card_ids": [
+      "80",
+      "81",
+      "82",
+      "83"
+    ]
+  },
+  {
+    "pattern": "～だけに",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为……，所以某种状态是理所当然的，或者变成比平时更严重的某种状态。",
+    "grammar_formation": "名・普通形（ナ形だーな/-である・名ーである） ＋だけに ＊名だの形には接続しない。",
+    "style_notes": "",
+    "card_ids": [
+      "324",
+      "325",
+      "326",
+      "327"
+    ]
+  },
+  {
+    "pattern": "～だけの（ことは）ある",
+    "chinese_meaning": "",
+    "explanation_chinese": "正如从……这一条件出发所期待的那样。",
+    "grammar_formation": "名・普通形（ナ形だーな） ＋だけの（ことは）ある ＊名だの形には接続しない。",
+    "style_notes": "",
+    "card_ids": [
+      "365",
+      "366",
+      "367"
+    ]
+  },
+  {
+    "pattern": "～つつ",
+    "chinese_meaning": "",
+    "explanation_chinese": "一边……，一边做某事。书面语。",
+    "grammar_formation": "動ーます形 ＋つつ",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "39",
+      "40",
+      "41"
+    ]
+  },
+  {
+    "pattern": "～つつある",
+    "chinese_meaning": "",
+    "explanation_chinese": "……变化正在进行过程中。书面语。",
+    "grammar_formation": "動ーます形 ＋つつある",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "36",
+      "37",
+      "38"
+    ]
+  },
+  {
+    "pattern": "～つつ（も）",
+    "chinese_meaning": "",
+    "explanation_chinese": "动作行为与……这种心理活动不一致。",
+    "grammar_formation": "動ーます形 ＋つつ（も）",
+    "style_notes": "",
+    "card_ids": [
+      "265",
+      "266",
+      "267"
+    ]
+  },
+  {
+    "pattern": "～てからでないと・～てからでなければ",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果不是做完……以后的活，某事就无法实现。",
+    "grammar_formation": "動ーて形 ＋からでないと・からでなければ",
+    "style_notes": "",
+    "card_ids": [
+      "58",
+      "59",
+      "60",
+      "61"
+    ]
+  },
+  {
+    "pattern": "～てしかたがない・～てしょうがない・～てたまらない",
+    "chinese_meaning": "",
+    "explanation_chinese": "感到非常……。",
+    "grammar_formation": "動ーて形・イ形ーくて・ナ形ーで ＋しかたがない・しょうがない・たまらない",
+    "style_notes": "",
+    "card_ids": [
+      "488",
+      "489",
+      "490",
+      "491",
+      "492",
+      "493"
+    ]
+  },
+  {
+    "pattern": "～てでも",
+    "chinese_meaning": "",
+    "explanation_chinese": "采用一般不用的……手段，以这种心理准备去做某事。",
+    "grammar_formation": "動ーて形 ＋でも",
+    "style_notes": "",
+    "card_ids": [
+      "419",
+      "420",
+      "421"
+    ]
+  },
+  {
+    "pattern": "～てならない",
+    "chinese_meaning": "",
+    "explanation_chinese": "心情非常地……。",
+    "grammar_formation": "動ーて形・イ形ーくて・ナ形ーで ＋ならない",
+    "style_notes": "",
+    "card_ids": [
+      "494",
+      "495",
+      "496",
+      "497"
+    ]
+  },
+  {
+    "pattern": "～てはじめて",
+    "chinese_meaning": "",
+    "explanation_chinese": "经历……以后，或者变成……状态以后，发生了以前从未出现过的事情。",
+    "grammar_formation": "動ーて形 ＋はじめて",
+    "style_notes": "",
+    "card_ids": [
+      "42",
+      "43",
+      "44",
+      "45"
+    ]
+  },
+  {
+    "pattern": "～て以来・～てこのかた",
+    "chinese_meaning": "",
+    "explanation_chinese": "做了……之后直到现在，一直持续着相同的状态。",
+    "grammar_formation": "動ーて形 ＋以来・このかた",
+    "style_notes": "",
+    "card_ids": [
+      "53",
+      "54",
+      "55",
+      "56",
+      "57"
+    ]
+  },
+  {
+    "pattern": "～というか～というか",
+    "chinese_meaning": "",
+    "explanation_chinese": "既可以……这样说，也可以……那样说。",
+    "grammar_formation": "普通形（ナ形だ・名だ） ＋というか",
+    "style_notes": "",
+    "card_ids": [
+      "185",
+      "186",
+      "187"
+    ]
+  },
+  {
+    "pattern": "～というと・～といえば・～といったら",
+    "chinese_meaning": "",
+    "explanation_chinese": "叙述从……这个词语马上就能联想到的事情。",
+    "grammar_formation": "名・動ー普通形 ＋というと・といえば・といったら",
+    "style_notes": "",
+    "card_ids": [
+      "243",
+      "244",
+      "245",
+      "246",
+      "247"
+    ]
+  },
+  {
+    "pattern": "～というものだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "从常识来看，简直是……。",
+    "grammar_formation": "普通形（ナ形だ・名だ） ＋というものだ",
+    "style_notes": "",
+    "card_ids": [
+      "448",
+      "449",
+      "450"
+    ]
+  },
+  {
+    "pattern": "～というものではない・～というものでもない",
+    "chinese_meaning": "",
+    "explanation_chinese": "不能说具备某种条件就一定……。",
+    "grammar_formation": "普通形（ナ形（だ）・名（だ）） ＋というものではない・というものでもない",
+    "style_notes": "",
+    "card_ids": [
+      "232",
+      "233",
+      "234",
+      "235"
+    ]
+  },
+  {
+    "pattern": "～といえば",
+    "chinese_meaning": "",
+    "explanation_chinese": "提出话题中出现的词语，导入与该词语相关的其他话题。",
+    "grammar_formation": "取り上げる言葉 ＋といえば",
+    "style_notes": "",
+    "card_ids": [
+      "239",
+      "240",
+      "241",
+      "242"
+    ]
+  },
+  {
+    "pattern": "～といった",
+    "chinese_meaning": "",
+    "explanation_chinese": "接在几个例子之后，对例子进行汇总。",
+    "grammar_formation": "名 ＋といった",
+    "style_notes": "",
+    "card_ids": [
+      "195",
+      "196",
+      "197",
+      "198"
+    ]
+  },
+  {
+    "pattern": "～といったら",
+    "chinese_meaning": "",
+    "explanation_chinese": "强调……的程度非同寻常。",
+    "grammar_formation": "名 ＋といったら",
+    "style_notes": "",
+    "card_ids": [
+      "251",
+      "252",
+      "253",
+      "254"
+    ]
+  },
+  {
+    "pattern": "～といっても",
+    "chinese_meaning": "",
+    "explanation_chinese": "实际情况与由……引发的联想不同。",
+    "grammar_formation": "名・普通形 ＋といっても",
+    "style_notes": "",
+    "card_ids": [
+      "268",
+      "269",
+      "270"
+    ]
+  },
+  {
+    "pattern": "～ところだった",
+    "chinese_meaning": "",
+    "explanation_chinese": "即将达到……这种状态的边缘，但事实上尚未如此。",
+    "grammar_formation": "動ー辞書形/ない形 ＋ところだった",
+    "style_notes": "",
+    "card_ids": [
+      "393",
+      "394",
+      "395",
+      "396"
+    ]
+  },
+  {
+    "pattern": "～としたら・～とすれば・～とすると・～となったら・～となれば・～となると",
+    "chinese_meaning": "",
+    "explanation_chinese": "假设……的情况、如果变成了……的情况，会这样做或变成这样。",
+    "grammar_formation": "普通形 ＋としたら・とすれば・とすると\n名・普通形 ＋となったら・となれば・となると",
+    "style_notes": "",
+    "card_ids": [
+      "274",
+      "275",
+      "276",
+      "277",
+      "278"
+    ]
+  },
+  {
+    "pattern": "～として",
+    "chinese_meaning": "",
+    "explanation_chinese": "以……的立场、资格、职责、名义做某事，或是处于某种状态。",
+    "grammar_formation": "名 ＋として",
+    "style_notes": "",
+    "card_ids": [
+      "368",
+      "369",
+      "370",
+      "371",
+      "372"
+    ]
+  },
+  {
+    "pattern": "～としても・～にしても・～にしろ・～にせよ",
+    "chinese_meaning": "",
+    "explanation_chinese": "即使……是事实，说话人的情绪也不受其影响。",
+    "grammar_formation": "普通形 ＋としても\n名・普通形（ナ形ーである・名ーである） ＋にしても・にしろ・にせよ",
+    "style_notes": "",
+    "card_ids": [
+      "291",
+      "292",
+      "293",
+      "294"
+    ]
+  },
+  {
+    "pattern": "～として～ない",
+    "chinese_meaning": "",
+    "explanation_chinese": "否定某事“连最低限度的……都完全没有”。",
+    "grammar_formation": "（何・だれ＋）一＋助数詞 ＋として～ない",
+    "style_notes": "",
+    "card_ids": [
+      "410",
+      "411",
+      "412"
+    ]
+  },
+  {
+    "pattern": "～とは",
+    "chinese_meaning": "",
+    "explanation_chinese": "对……这个词语进行说明、下定义。书面语。",
+    "grammar_formation": "名 ＋とは",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "236",
+      "237",
+      "238"
+    ]
+  },
+  {
+    "pattern": "～とみえる",
+    "chinese_meaning": "",
+    "explanation_chinese": "有某种根据，觉得好像是……。",
+    "grammar_formation": "普通形 ＋とみえる",
+    "style_notes": "",
+    "card_ids": [
+      "422",
+      "423",
+      "424"
+    ]
+  },
+  {
+    "pattern": "～どころではない",
+    "chinese_meaning": "",
+    "explanation_chinese": "不是可以……的状况。",
+    "grammar_formation": "名・動ー辞書形 ＋どころではない",
+    "style_notes": "",
+    "card_ids": [
+      "353",
+      "354",
+      "355"
+    ]
+  },
+  {
+    "pattern": "～どころではない・～どころか",
+    "chinese_meaning": "",
+    "explanation_chinese": "不是……的程度，实际上存在很大差异。",
+    "grammar_formation": "名・普通形（ナ形だー（な)/-である・名だーである） ＋どころではない・どころか",
+    "style_notes": "",
+    "card_ids": [
+      "220",
+      "221",
+      "222",
+      "223"
+    ]
+  },
+  {
+    "pattern": "～ないことには",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果不……某事就无法实现。",
+    "grammar_formation": "動ーない形・イ形ーくない・ナ形ーでない・名ーでない ＋ことには",
+    "style_notes": "",
+    "card_ids": [
+      "285",
+      "286",
+      "287"
+    ]
+  },
+  {
+    "pattern": "～ないではいられない・～ずにはいられない",
+    "chinese_meaning": "",
+    "explanation_chinese": "无论如何也要做……，无法抑制住。",
+    "grammar_formation": "動ーない形 ＋ではいられない\n動ーない形 ＋ずにはいられない ＊例外 する→せずに",
+    "style_notes": "",
+    "card_ids": [
+      "498",
+      "499",
+      "500",
+      "501"
+    ]
+  },
+  {
+    "pattern": "～ないもの（だろう）か",
+    "chinese_meaning": "",
+    "explanation_chinese": "虽然很难实现，但想方设法让……实现。",
+    "grammar_formation": "動ーない形 ＋もの（だろう）か",
+    "style_notes": "",
+    "card_ids": [
+      "520",
+      "521",
+      "522"
+    ]
+  },
+  {
+    "pattern": "～ないわけには（は）いかない",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为……的缘故，所以必须做……。",
+    "grammar_formation": "動ーない形 ＋わけには（は）いかない",
+    "style_notes": "",
+    "card_ids": [
+      "502",
+      "503",
+      "504",
+      "505"
+    ]
+  },
+  {
+    "pattern": "～ながら（も）",
+    "chinese_meaning": "",
+    "explanation_chinese": "作为前置词，提示与从……状态所预想的事情不同，或者相当于「～けれども」。",
+    "grammar_formation": "動ーます形・イ形・ナ形/ーであり・名/ーであり ＋ながら（も）",
+    "style_notes": "",
+    "card_ids": [
+      "262",
+      "263",
+      "264"
+    ]
+  },
+  {
+    "pattern": "～など・～なんか・～なんて",
+    "chinese_meaning": "",
+    "explanation_chinese": "……价值低，或不重要。「～なんか・～なんて」→口语体。",
+    "grammar_formation": "名（＋助詞） ＋など・なんか・なんて",
+    "style_notes": "話し言葉",
+    "card_ids": [
+      "403",
+      "404",
+      "405"
+    ]
+  },
+  {
+    "pattern": "～にかかわりなく・～にかかわらず",
+    "chinese_meaning": "",
+    "explanation_chinese": "不论……都是相同的结果。",
+    "grammar_formation": "名 ＋にかかわりなく・にかかわらず",
+    "style_notes": "",
+    "card_ids": [
+      "202",
+      "203",
+      "204",
+      "205"
+    ]
+  },
+  {
+    "pattern": "～にかけては",
+    "chinese_meaning": "",
+    "explanation_chinese": "……比任何人都擅长。",
+    "grammar_formation": "名 ＋にかけては",
+    "style_notes": "",
+    "card_ids": [
+      "127",
+      "128",
+      "129"
+    ]
+  },
+  {
+    "pattern": "～にきまっている",
+    "chinese_meaning": "",
+    "explanation_chinese": "认为绝对是……。口语体。",
+    "grammar_formation": "普通形（ナ形だ・名だ） ＋にきまっている",
+    "style_notes": "話し言葉",
+    "card_ids": [
+      "442",
+      "443",
+      "444"
+    ]
+  },
+  {
+    "pattern": "～にこたえて",
+    "chinese_meaning": "",
+    "explanation_chinese": "为了不辜负……的期待、愿望而做某事。",
+    "grammar_formation": "名 ＋にこたえて\n名 ＋にこたえる＋名",
+    "style_notes": "",
+    "card_ids": [
+      "137",
+      "138",
+      "139"
+    ]
+  },
+  {
+    "pattern": "～にしたら・～にすれば・～にしてみれば・～にしても",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果站在……的立场来看，即使从……的立场来看，也可以得出某个结论。",
+    "grammar_formation": "名 ＋にしたら・にすれば・にしてみれば・にしても",
+    "style_notes": "",
+    "card_ids": [
+      "376",
+      "377",
+      "378",
+      "379"
+    ]
+  },
+  {
+    "pattern": "～にしては",
+    "chinese_meaning": "",
+    "explanation_chinese": "从……这一事实、标准来考虑的话，是出乎意料的。",
+    "grammar_formation": "名・普通形（ナ形だーである・名だーである） ＋にしては",
+    "style_notes": "",
+    "card_ids": [
+      "362",
+      "363",
+      "364"
+    ]
+  },
+  {
+    "pattern": "～にしても～にしても・～にしろ～にしろ・～にせよ～にせよ",
+    "chinese_meaning": "",
+    "explanation_chinese": "以……为例也好，以其他的……为例也好，都可以得出同样的结论。",
+    "grammar_formation": "名・動ー辞書形/ない形 ＋にしても・にしろ・にせよ",
+    "style_notes": "",
+    "card_ids": [
+      "188",
+      "189",
+      "190",
+      "191",
+      "192",
+      "193",
+      "194"
+    ]
+  },
+  {
+    "pattern": "～にすぎない",
+    "chinese_meaning": "",
+    "explanation_chinese": "只是……而已，没有更高的含义。",
+    "grammar_formation": "名・普通形（ナ形だーである・名だーである） ＋にすぎない",
+    "style_notes": "",
+    "card_ids": [
+      "451",
+      "452",
+      "453"
+    ]
+  },
+  {
+    "pattern": "～につき",
+    "chinese_meaning": "",
+    "explanation_chinese": "向公众通知“因为……的理由，所以导致某种状态”。书面语，文章体用语。",
+    "grammar_formation": "名 ＋につき",
+    "style_notes": "硬い言い方・書き言葉",
+    "card_ids": [
+      "314",
+      "315",
+      "316"
+    ]
+  },
+  {
+    "pattern": "～につけて",
+    "chinese_meaning": "",
+    "explanation_chinese": "……心情就总是必然如此。",
+    "grammar_formation": "動ー辞書形 ＋につけて",
+    "style_notes": "",
+    "card_ids": [
+      "177",
+      "178",
+      "179",
+      "180"
+    ]
+  },
+  {
+    "pattern": "～につれて・～にしたがって",
+    "chinese_meaning": "",
+    "explanation_chinese": "一方发生变化的同时，另一方也发生变化。",
+    "grammar_formation": "名する・動ー辞書形 ＋につれて・にしたがって",
+    "style_notes": "",
+    "card_ids": [
+      "160",
+      "161",
+      "162",
+      "163"
+    ]
+  },
+  {
+    "pattern": "～にとって",
+    "chinese_meaning": "",
+    "explanation_chinese": "（在众多想法之中）按……的想法来看，可以得出某种结论。",
+    "grammar_formation": "名 ＋にとって",
+    "style_notes": "",
+    "card_ids": [
+      "373",
+      "374",
+      "375"
+    ]
+  },
+  {
+    "pattern": "～にほかならない",
+    "chinese_meaning": "",
+    "explanation_chinese": "就是……。除此之外并非其他。书面语。",
+    "grammar_formation": "名 ＋にほかならない",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "454",
+      "455",
+      "456"
+    ]
+  },
+  {
+    "pattern": "～にもかかわらず",
+    "chinese_meaning": "",
+    "explanation_chinese": "不受……的影响做某事。",
+    "grammar_formation": "名・普通形（ナ形だーである・名だーである） ＋にもかかわらず",
+    "style_notes": "",
+    "card_ids": [
+      "255",
+      "256",
+      "257"
+    ]
+  },
+  {
+    "pattern": "～によって",
+    "chinese_meaning": "",
+    "explanation_chinese": "因……原因导致某种结果・使用……手段和方法等做某事。书面语。",
+    "grammar_formation": "名 ＋によって",
+    "style_notes": "",
+    "card_ids": [
+      "295",
+      "296",
+      "297",
+      "298",
+      "299"
+    ]
+  },
+  {
+    "pattern": "～にわたって",
+    "chinese_meaning": "",
+    "explanation_chinese": "其状态扩大到……的全部。",
+    "grammar_formation": "名 ＋にわたって\n名 ＋にわたる＋名",
+    "style_notes": "",
+    "card_ids": [
+      "69",
+      "70",
+      "71"
+    ]
+  },
+  {
+    "pattern": "～に伴って・～とともに",
+    "chinese_meaning": "",
+    "explanation_chinese": "与一方的变化相关联，另一方也发生变化或使其变化。书面语。",
+    "grammar_formation": "名する・動ー辞書形 ＋に伴って・とともに\n名 ＋に伴う＋名",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "164",
+      "165",
+      "166",
+      "167",
+      "168"
+    ]
+  },
+  {
+    "pattern": "～に基づいて",
+    "chinese_meaning": "",
+    "explanation_chinese": "以……为基准做某事。",
+    "grammar_formation": "名 ＋に基づいて\n名 ＋に基づいた＋名",
+    "style_notes": "",
+    "card_ids": [
+      "143",
+      "144",
+      "145",
+      "146"
+    ]
+  },
+  {
+    "pattern": "～に対して",
+    "chinese_meaning": "",
+    "explanation_chinese": "以……为对象做某事，关于……持有某种感情。",
+    "grammar_formation": "名 ＋に対して\n名 ＋に対する＋名",
+    "style_notes": "",
+    "card_ids": [
+      "130",
+      "131",
+      "132",
+      "133",
+      "134",
+      "135",
+      "136"
+    ]
+  },
+  {
+    "pattern": "～に応じて",
+    "chinese_meaning": "",
+    "explanation_chinese": "与……相应地发生改变或变化。",
+    "grammar_formation": "名 ＋に応じて\n名 ＋に応じた＋名",
+    "style_notes": "",
+    "card_ids": [
+      "173",
+      "174",
+      "175",
+      "176"
+    ]
+  },
+  {
+    "pattern": "～に沿って",
+    "chinese_meaning": "",
+    "explanation_chinese": "为了符合、不偏离……而做某事。",
+    "grammar_formation": "名 ＋に沿って\n名 ＋に沿う/に沿った＋名",
+    "style_notes": "",
+    "card_ids": [
+      "147",
+      "148",
+      "149",
+      "150"
+    ]
+  },
+  {
+    "pattern": "～に越したことはない",
+    "chinese_meaning": "",
+    "explanation_chinese": "理所当然还是……最好。",
+    "grammar_formation": "普通形現在（ナ形だーである・名だーである） ＋に越したことはない",
+    "style_notes": "",
+    "card_ids": [
+      "457",
+      "458",
+      "459"
+    ]
+  },
+  {
+    "pattern": "～に違いない・～に相違ない",
+    "chinese_meaning": "",
+    "explanation_chinese": "有某种依据，确信一定是……。「～に相違ない」→书面语。",
+    "grammar_formation": "普通形（ナ形だ/-である・名だ/-である） ＋に違いない・に相違ない",
+    "style_notes": "",
+    "card_ids": [
+      "438",
+      "439",
+      "440",
+      "441"
+    ]
+  },
+  {
+    "pattern": "～に関して",
+    "chinese_meaning": "",
+    "explanation_chinese": "有关……的内容，获得或发布详细的信息。书面语。",
+    "grammar_formation": "名 ＋に関して\n名 ＋に関する＋名",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "120",
+      "121",
+      "122",
+      "123"
+    ]
+  },
+  {
+    "pattern": "～に限って",
+    "chinese_meaning": "",
+    "explanation_chinese": "……与平日不同。",
+    "grammar_formation": "名 ＋に限って",
+    "style_notes": "",
+    "card_ids": [
+      "94",
+      "95",
+      "96",
+      "97",
+      "98",
+      "99",
+      "100"
+    ]
+  },
+  {
+    "pattern": "～に限らず",
+    "chinese_meaning": "",
+    "explanation_chinese": "范围不仅限于……，还包含同一类的更广的范围。",
+    "grammar_formation": "名 ＋に限らず",
+    "style_notes": "",
+    "card_ids": [
+      "101",
+      "102",
+      "103"
+    ]
+  },
+  {
+    "pattern": "～に限り",
+    "chinese_meaning": "",
+    "explanation_chinese": "仅限手……是特别的或例外的。书面语。",
+    "grammar_formation": "名 ＋に限り",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "84",
+      "85",
+      "86"
+    ]
+  },
+  {
+    "pattern": "～に際して・～にあたって",
+    "chinese_meaning": "",
+    "explanation_chinese": "当……的时候。书面语。",
+    "grammar_formation": "名・動ー辞書形 ＋に際して・にあたって",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ]
+  },
+  {
+    "pattern": "～のことだから",
+    "chinese_meaning": "",
+    "explanation_chinese": "从……的性格和平日态度来考虑，推断出某事。",
+    "grammar_formation": "名 ＋のことだから",
+    "style_notes": "",
+    "card_ids": [
+      "321",
+      "322",
+      "323"
+    ]
+  },
+  {
+    "pattern": "～のみならず",
+    "chinese_meaning": "",
+    "explanation_chinese": "不仅……，此外还有其他的。书面语。",
+    "grammar_formation": "名・普通形（ナ形だーである・名だーである） ＋のみならず",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "104",
+      "105",
+      "106"
+    ]
+  },
+  {
+    "pattern": "～のもとで・～のもとに",
+    "chinese_meaning": "",
+    "explanation_chinese": "在……的影响下做某事，处于……的状态下做某事。",
+    "grammar_formation": "名 ＋のもとで・のもとに",
+    "style_notes": "",
+    "card_ids": [
+      "151",
+      "152",
+      "153",
+      "154",
+      "155"
+    ]
+  },
+  {
+    "pattern": "～はさておき",
+    "chinese_meaning": "",
+    "explanation_chinese": "由于还有别更为重要的事情，所以……姑且不论。",
+    "grammar_formation": "名（＋助詞） ＋はさておき",
+    "style_notes": "",
+    "card_ids": [
+      "214",
+      "215",
+      "216"
+    ]
+  },
+  {
+    "pattern": "～はともかく（として）",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为有其他更想强调的事情，所以……暂不考虑。",
+    "grammar_formation": "名（＋助詞） ＋はともかく（として）\n普通形（ナ形だーな・名だーな）の ＋はともかく（として）",
+    "style_notes": "",
+    "card_ids": [
+      "210",
+      "211",
+      "212",
+      "213"
+    ]
+  },
+  {
+    "pattern": "～はもとより",
+    "chinese_meaning": "",
+    "explanation_chinese": "……自不必说，其他也如此。书面语。",
+    "grammar_formation": "名（＋助詞） ＋はもとより",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "111",
+      "112",
+      "113",
+      "114"
+    ]
+  },
+  {
+    "pattern": "～ばかりか",
+    "chinese_meaning": "",
+    "explanation_chinese": "仅仅……就足够了，但还追加了其他的事情。",
+    "grammar_formation": "名・普通形（ナ形だーな/-である・名だーである） ＋ばかりか",
+    "style_notes": "",
+    "card_ids": [
+      "107",
+      "108",
+      "109",
+      "110"
+    ]
+  },
+  {
+    "pattern": "～ばかりだ・～一方だ",
+    "chinese_meaning": "",
+    "explanation_chinese": "变化朝着……单方向不断加剧。",
+    "grammar_formation": "動ー辞書形 ＋ばかりだ・一方だ",
+    "style_notes": "",
+    "card_ids": [
+      "29",
+      "30",
+      "31",
+      "32"
+    ]
+  },
+  {
+    "pattern": "～ばかりに",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为……的原因，导致了没有预想到的不希望出现的结果，或者无论如何都想实现……所以做了不同寻常的事情。",
+    "grammar_formation": "普通形（ナ形だーな/-である・名だーである） ＋ばかりに",
+    "style_notes": "",
+    "card_ids": [
+      "328",
+      "329",
+      "330",
+      "331",
+      "332"
+    ]
+  },
+  {
+    "pattern": "～べきだ／～べきではない",
+    "chinese_meaning": "",
+    "explanation_chinese": "理所当然要做……、或者必须做……、或者最好做……／不可以做……。",
+    "grammar_formation": "動ー辞書形 ＋べきだ・べきではない ＊例外 する→するべき・すべき\n動ー辞書形 ＋べきではない＋名",
+    "style_notes": "",
+    "card_ids": [
+      "463",
+      "464",
+      "465",
+      "466"
+    ]
+  },
+  {
+    "pattern": "～まい／～ではあるまいか",
+    "chinese_meaning": "",
+    "explanation_chinese": "不会……吧／不是……吧。文章体用语。",
+    "grammar_formation": "動ー辞書形＊・イ形ーくある・ナ形ーである・名ーである ＋まい\n普通形＋の（ナ形だーな・名だーな） ＋ではあるまいか\n＊動Ⅱ・Ⅲー動辞書形/ない＋まい する→「すまい」もある",
+    "style_notes": "書き言葉",
+    "card_ids": [
+      "432",
+      "433",
+      "434",
+      "435",
+      "436",
+      "437"
+    ]
+  },
+  {
+    "pattern": "～まい／～（よ）うか～まいか",
+    "chinese_meaning": "",
+    "explanation_chinese": "不打算做……，或者不做……／还是不做……。",
+    "grammar_formation": "動ー辞書形＊ ＋まい 動ーう・よう形 ＋か＋動ー辞書形＊ ＋まいか（同じ動詞を使う）\n＊動Ⅱ・Ⅲー動辞書形/ない＋まい する→「すまい」もある",
+    "style_notes": "",
+    "card_ids": [
+      "480",
+      "481",
+      "482",
+      "483",
+      "484"
+    ]
+  },
+  {
+    "pattern": "～まで・～までして・～てまで",
+    "chinese_meaning": "",
+    "explanation_chinese": "……这种极端程度的事情、事情也是某种状态，或者也做某事。",
+    "grammar_formation": "名（＋助詞） ＋まで・までして\n動ーて形 ＋まで",
+    "style_notes": "",
+    "card_ids": [
+      "406",
+      "407",
+      "408",
+      "409"
+    ]
+  },
+  {
+    "pattern": "～もかまわず",
+    "chinese_meaning": "",
+    "explanation_chinese": "做某动作时，不理会……尽管平时会顾及。",
+    "grammar_formation": "名・普通形（ナ形だーな/-である・名だーな/-である）の ＋もかまわず",
+    "style_notes": "",
+    "card_ids": [
+      "206",
+      "207",
+      "208",
+      "209"
+    ]
+  },
+  {
+    "pattern": "～ものか",
+    "chinese_meaning": "",
+    "explanation_chinese": "绝对不打算做……。",
+    "grammar_formation": "動ー辞書形 ＋ものか",
+    "style_notes": "話し言葉",
+    "card_ids": [
+      "224",
+      "225",
+      "226",
+      "227",
+      "485",
+      "486",
+      "487"
+    ]
+  },
+  {
+    "pattern": "～ものがある",
+    "chinese_meaning": "",
+    "explanation_chinese": "有……的感觉。",
+    "grammar_formation": "動・形ー普通形現在（ナ形だーな） ＋ものがある",
+    "style_notes": "",
+    "card_ids": [
+      "523",
+      "524",
+      "525"
+    ]
+  },
+  {
+    "pattern": "～ものだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "A 怀念过去……的习惯。\nB 非常强烈地感到……、惊讶……、惊讶……。",
+    "grammar_formation": "A 動ーた形 ＋ものだ\nB 動・形ー普通形（ナ形だーな） ＋ものだ",
+    "style_notes": "",
+    "card_ids": [
+      "445",
+      "446",
+      "447",
+      "514",
+      "515",
+      "516",
+      "517",
+      "518",
+      "519"
+    ]
+  },
+  {
+    "pattern": "～ものだから・～もので・～もの",
+    "chinese_meaning": "",
+    "explanation_chinese": "辩解说“因为……所以……”。口语体。",
+    "grammar_formation": "普通形（ナ形だーな・名だーな） ＋ものだから・もので\n普通形 ＋もの",
+    "style_notes": "話し言葉",
+    "card_ids": [
+      "300",
+      "301",
+      "302",
+      "303"
+    ]
+  },
+  {
+    "pattern": "～ものだ／～ものではない",
+    "chinese_meaning": "",
+    "explanation_chinese": "最好做……，或者必须做……／最好不要做……，或者不准做……。",
+    "grammar_formation": "動ー辞書形/ない形 ＋ものだ\n動ー辞書形 ＋ものではない",
+    "style_notes": "",
+    "card_ids": [
+      "473",
+      "474",
+      "475",
+      "476"
+    ]
+  },
+  {
+    "pattern": "～ものなら",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果能……的话，想这样做或想让别人这样做。",
+    "grammar_formation": "動ー辞書形 ＋ものなら",
+    "style_notes": "",
+    "card_ids": [
+      "279",
+      "280",
+      "281"
+    ]
+  },
+  {
+    "pattern": "～ものの・～とはいうものの",
+    "chinese_meaning": "",
+    "explanation_chinese": "虽然……是事实，可并未发生由此事实所理所当然联想到的事情。",
+    "grammar_formation": "名・動・形ー普通形（ナ形だーな/-である） ＋ものの\n名・普通形（だ） ＋とはいうものの",
+    "style_notes": "",
+    "card_ids": [
+      "258",
+      "259",
+      "260",
+      "261"
+    ]
+  },
+  {
+    "pattern": "～やら～やら",
+    "chinese_meaning": "",
+    "explanation_chinese": "有很多例子，比如……或其他的……等。",
+    "grammar_formation": "名・動ー辞書形・イ形 ＋やら",
+    "style_notes": "",
+    "card_ids": [
+      "181",
+      "182",
+      "183",
+      "184"
+    ]
+  },
+  {
+    "pattern": "～ようがない",
+    "chinese_meaning": "",
+    "explanation_chinese": "即使想做……，但不知道怎么做才好，或者完全没有可能性。",
+    "grammar_formation": "動ーます形 ＋ようがない",
+    "style_notes": "",
+    "card_ids": [
+      "348",
+      "349",
+      "350",
+      "351",
+      "352"
+    ]
+  },
+  {
+    "pattern": "～わけがない",
+    "chinese_meaning": "",
+    "explanation_chinese": "绝对不……，是无法想象的。",
+    "grammar_formation": "普通形（ナ形だーな/-である・名だーの/-である） ＋わけがない",
+    "style_notes": "",
+    "card_ids": [
+      "217",
+      "218",
+      "219"
+    ]
+  },
+  {
+    "pattern": "～わけではない・～というわけではない",
+    "chinese_meaning": "",
+    "explanation_chinese": "不能说全部都……，并非特别……。",
+    "grammar_formation": "普通形（ナ形だーな/-である・名だーの/-である） ＋わけではない\n普通形（名・（だ）） ＋というわけではない",
+    "style_notes": "",
+    "card_ids": [
+      "228",
+      "229",
+      "230",
+      "231"
+    ]
+  },
+  {
+    "pattern": "～わけにはいかない・～わけにもいかない",
+    "chinese_meaning": "",
+    "explanation_chinese": "因为违反社会常识、心理抵触等情况存在，所以无法做到……。",
+    "grammar_formation": "動ー辞書形 ＋わけにはいかない・わけにもいかない",
+    "style_notes": "",
+    "card_ids": [
+      "342",
+      "343",
+      "344"
+    ]
+  },
+  {
+    "pattern": "～わりに（は）",
+    "chinese_meaning": "",
+    "explanation_chinese": "与从……的标准出发所能考虑到的程度不一致。",
+    "grammar_formation": "名ーの・動・形ー普通形（ナ形だーな/-である） ＋わりに（は）",
+    "style_notes": "",
+    "card_ids": [
+      "359",
+      "360",
+      "361"
+    ]
+  },
+  {
+    "pattern": "～をはじめ（として）",
+    "chinese_meaning": "",
+    "explanation_chinese": "……是有代表性的例子，除此之外还有很多其他的。书面语。",
+    "grammar_formation": "名 ＋をはじめ（として）",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "62",
+      "63",
+      "64"
+    ]
+  },
+  {
+    "pattern": "～をめぐって",
+    "chinese_meaning": "",
+    "explanation_chinese": "针对……进行讨论、采取对立的行为、散布谣言等。书面语。",
+    "grammar_formation": "名 ＋をめぐって\n名 ＋をめぐる＋名",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "124",
+      "125",
+      "126"
+    ]
+  },
+  {
+    "pattern": "～をもとに（して）",
+    "chinese_meaning": "",
+    "explanation_chinese": "以……为素材、基础、根据等制作出某物。",
+    "grammar_formation": "名 ＋をもとに（して）\n名 ＋をもとにした＋名",
+    "style_notes": "",
+    "card_ids": [
+      "140",
+      "141",
+      "142"
+    ]
+  },
+  {
+    "pattern": "～を問わず",
+    "chinese_meaning": "",
+    "explanation_chinese": "无论……是否是问题，无论哪种情况都同样。",
+    "grammar_formation": "名 ＋を問わず",
+    "style_notes": "",
+    "card_ids": [
+      "199",
+      "200",
+      "201"
+    ]
+  },
+  {
+    "pattern": "～を抜きにしては",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果没有……或者如果不考虑……的状态下，某事就无法实现。",
+    "grammar_formation": "名 ＋を抜きにしては",
+    "style_notes": "",
+    "card_ids": [
+      "288",
+      "289",
+      "290"
+    ]
+  },
+  {
+    "pattern": "～を通じて・～を通して",
+    "chinese_meaning": "",
+    "explanation_chinese": "……的期间内一直保持同样的状态。",
+    "grammar_formation": "名 ＋を通じて・を通して",
+    "style_notes": "",
+    "card_ids": [
+      "72",
+      "73",
+      "74",
+      "75",
+      "76"
+    ]
+  },
+  {
+    "pattern": "～上（で）",
+    "chinese_meaning": "",
+    "explanation_chinese": "作为准备先做……，其后再做接下来的行为。",
+    "grammar_formation": "動ーた形 ＋上で\n名ーの ＋上で",
+    "style_notes": "",
+    "card_ids": [
+      "46",
+      "47",
+      "48",
+      "49"
+    ]
+  },
+  {
+    "pattern": "～上（に）",
+    "chinese_meaning": "",
+    "explanation_chinese": "不仅……，而且还追加更好或更坏的事情。",
+    "grammar_formation": "普通形（ナ形だーな/-である・名だーの/-である） ＋上（に）",
+    "style_notes": "",
+    "card_ids": [
+      "115",
+      "116",
+      "117",
+      "118",
+      "119"
+    ]
+  },
+  {
+    "pattern": "～向けだ",
+    "chinese_meaning": "",
+    "explanation_chinese": "以……为特定对象。",
+    "grammar_formation": "名 ＋向けだ",
+    "style_notes": "",
+    "card_ids": [
+      "156",
+      "157",
+      "158",
+      "159"
+    ]
+  },
+  {
+    "pattern": "～得る／～得ない",
+    "chinese_meaning": "",
+    "explanation_chinese": "能……，有那样的可能性／不能……，没有那样的可能性。",
+    "grammar_formation": "動ーます形 ＋得る・得ない",
+    "style_notes": "",
+    "card_ids": [
+      "356",
+      "357",
+      "358"
+    ]
+  },
+  {
+    "pattern": "～最中だ",
+    "chinese_meaning": "",
+    "explanation_chinese": "正在做……的时候。",
+    "grammar_formation": "名ーの・動ーている形 ＋最中だ",
+    "style_notes": "",
+    "card_ids": [
+      "19",
+      "20",
+      "21"
+    ]
+  },
+  {
+    "pattern": "～末（に）",
+    "chinese_meaning": "",
+    "explanation_chinese": "做了各种……之后，最终变成了某种结果。",
+    "grammar_formation": "名ーの・動ーた形 ＋末（に）",
+    "style_notes": "",
+    "card_ids": [
+      "390",
+      "391",
+      "392"
+    ]
+  },
+  {
+    "pattern": "～次第",
+    "chinese_meaning": "",
+    "explanation_chinese": "……实现以后，马上采取后续措施。书面语。",
+    "grammar_formation": "動ーます形 ＋次第",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "50",
+      "51",
+      "52"
+    ]
+  },
+  {
+    "pattern": "～次第だ",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果……变化，那么结果也发生变化，根据……而定。",
+    "grammar_formation": "名 ＋次第だ",
+    "style_notes": "",
+    "card_ids": [
+      "169",
+      "170",
+      "171",
+      "172"
+    ]
+  },
+  {
+    "pattern": "～限り",
+    "chinese_meaning": "",
+    "explanation_chinese": "在……的范围内全部做某事或是持续某种状态。",
+    "grammar_formation": "名ーの・動ー辞書形/ている形 ＋限り",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "77",
+      "78",
+      "79"
+    ]
+  },
+  {
+    "pattern": "～限りでは",
+    "chinese_meaning": "",
+    "explanation_chinese": "把信息源的范围限定在……之内的话，就可以断言某件事情。",
+    "grammar_formation": "名ーの・動ー辞書形/た形/ている形 ＋限りでは",
+    "style_notes": "",
+    "card_ids": [
+      "91",
+      "92",
+      "93"
+    ]
+  },
+  {
+    "pattern": "～限り（は）",
+    "chinese_meaning": "",
+    "explanation_chinese": "只要持续……的状态，后项状态也同样持续。",
+    "grammar_formation": "普通形現在（ナ形だーな/-である・名だーである） ＋限り（は）",
+    "style_notes": "",
+    "card_ids": [
+      "87",
+      "88",
+      "89",
+      "90"
+    ]
+  },
+  {
+    "pattern": "～際（に）",
+    "chinese_meaning": "",
+    "explanation_chinese": "……时候。书面语。",
+    "grammar_formation": "名ーの・動ー辞書形/た形 ＋際（に）",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  {
+    "pattern": "～（か）と思うと・～（か）と思ったら",
+    "chinese_meaning": "",
+    "explanation_chinese": "……之后，紧接着马上发生下一个事件或重大变化。",
+    "grammar_formation": "動ーた形 ＋（か）と思うと・（か）と思ったら",
+    "style_notes": "",
+    "card_ids": [
+      "12",
+      "13",
+      "14",
+      "15"
+    ]
+  },
+  {
+    "pattern": "～（のこと）となると",
+    "chinese_meaning": "",
+    "explanation_chinese": "强调针对……的话题或与……相关的事情，采取不同寻常的态度。",
+    "grammar_formation": "名 ＋（のこと）となると",
+    "style_notes": "",
+    "card_ids": [
+      "248",
+      "249",
+      "250"
+    ]
+  },
+  {
+    "pattern": "～（よ）うではないか",
+    "chinese_meaning": "",
+    "explanation_chinese": "一起做……吧、不一起做……吗？书面语。",
+    "grammar_formation": "動ーう・よう形 ＋ではないか",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "467",
+      "468",
+      "469"
+    ]
+  },
+  {
+    "pattern": "～（よ）うとしている",
+    "chinese_meaning": "",
+    "explanation_chinese": "在……这个变化发生的前一刻，马上就要……。书面语。",
+    "grammar_formation": "動ーう・よう形 ＋としている",
+    "style_notes": "硬い言い方",
+    "card_ids": [
+      "33",
+      "34",
+      "35"
+    ]
+  },
+  {
+    "pattern": "～（よ）うものなら",
+    "chinese_meaning": "",
+    "explanation_chinese": "如果……的话，就会产生严重的后果。",
+    "grammar_formation": "動ーう・よう形 ＋ものなら",
+    "style_notes": "",
+    "card_ids": [
+      "282",
+      "283",
+      "284"
+    ]
+  }
+]
