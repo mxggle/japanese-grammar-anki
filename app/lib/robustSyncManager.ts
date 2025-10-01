@@ -666,7 +666,7 @@ class RobustSyncManager {
     try {
       return await clientDB.getCardProgress(this.userId!, cardId) as ProgressRecord | null;
     } catch (error) {
-      // Fallback to localStorage
+      console.warn('Failed to load progress from IndexedDB, checking localStorage fallback:', error);
       const key = `progress_${this.userId}_${cardId}`;
       const stored = localStorage.getItem(key);
       return stored ? JSON.parse(stored) as ProgressRecord : null;

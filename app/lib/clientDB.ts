@@ -48,7 +48,7 @@ class ClientDatabase {
         }
 
         if (!db.objectStoreNames.contains('userStats')) {
-          const statsStore = db.createObjectStore('userStats', { keyPath: 'userId' });
+          db.createObjectStore('userStats', { keyPath: 'userId' });
         }
 
         if (!db.objectStoreNames.contains('dailyStats')) {

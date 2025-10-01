@@ -146,7 +146,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
         const response = await fetch('/api/study-queue', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ settings, limit: requestLimit })
+          body: JSON.stringify({ settings, limit: requestLimit, mode })
         });
         const result = await response.json();
 

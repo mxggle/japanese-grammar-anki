@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth, createClerkClient } from "@clerk/nextjs/server";
 import { db } from "@/app/lib/db";
 
@@ -103,7 +103,7 @@ async function getOrCreateUser(clerkUserId: string) {
   });
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { userId: clerkUserId } = await auth();
 

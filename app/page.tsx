@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from 'next/image';
 import { useUser, SignInButton, SignOutButton } from '@clerk/nextjs'
 import StudySession from "./components/StudySession";
 import StatsDisplay from "./components/StatsDisplay";
@@ -98,9 +99,11 @@ export default function Home() {
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
               {user?.imageUrl && (
-                <img
+                <Image
                   src={user.imageUrl}
                   alt="Profile"
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full border-2 border-amber-200"
                 />
               )}

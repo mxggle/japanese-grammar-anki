@@ -6,8 +6,11 @@ import { userSettingsManager } from './userSettings';
 import {
   scheduleCard,
   normalizeSettings,
+  stateToPersistence,
   type AnkiSettings,
   type AnkiCardState,
+  type PersistableCardState,
+  type CardStatus,
 } from './srs/ankiScheduler';
 import type { DailyStats as UnifiedDailyStats } from './unifiedStorage';
 
@@ -20,6 +23,20 @@ export interface ProgressUpdate {
   settings: AnkiSettings;
   learnedNewCard?: boolean;
   isReviewCard?: boolean;
+  state: SerializedCardState;
+}
+
+export interface SerializedCardState {
+  easeFactor: number;
+  interval: number;
+  repetitions: number;
+  status: CardStatus;
+  stepIndex: number;
+  lapses: number;
+  previousInterval: number;
+  isLeech: boolean;
+  lastReviewed: string | null;
+  nextReview: string | null;
 }
 
 export interface StudySession {
@@ -161,6 +178,7 @@ class OptimizedStorageManager {
 
     const learnedNewCard = schedulingResult.wasNewCard && schedulingResult.state.status !== 'new';
     const isReviewCard = previousState ? previousState.status === 'review' || previousState.status === 'relearning' : false;
+    const persistedState = stateToPersistence(schedulingResult.state);
 
     const progressUpdate: ProgressUpdate = {
       cardId,
@@ -170,7 +188,8 @@ class OptimizedStorageManager {
       sessionId: this.currentSession.id,
       settings,
       learnedNewCard,
-      isReviewCard
+      isReviewCard,
+      state: serializeState(persistedState)
     };
 
     this.currentSession.progressUpdates.push(progressUpdate);
@@ -221,7 +240,8 @@ class OptimizedStorageManager {
         ...update,
         settings: normalizeSettings(update.settings),
         learnedNewCard: update.learnedNewCard ?? false,
-        isReviewCard: update.isReviewCard ?? false
+        isReviewCard: update.isReviewCard ?? false,
+        state: normalizeSerializedState(update.state)
       }));
     } catch {
       return [];
@@ -283,7 +303,10 @@ class OptimizedStorageManager {
           cardId: update.cardId,
           grade: update.grade,
           studyTimeSeconds: update.studyTimeSeconds,
-          settings: update.settings
+          settings: update.settings,
+          state: update.state,
+          learnedNewCard: update.learnedNewCard,
+          isReviewCard: update.isReviewCard
         })
       });
 
@@ -583,5 +606,50 @@ function mapLocalProgressToState(progress: Record<string, unknown> | null | unde
     isLeech: Boolean(data.isLeech),
     nextReview: parseDate(data.nextReview),
     lastReviewed: parseDate(data.lastReviewed ?? data.timestamp),
+  };
+}
+
+function serializeState(state: PersistableCardState): SerializedCardState {
+  return {
+    easeFactor: state.easeFactor,
+    interval: state.interval,
+    repetitions: state.repetitions,
+    status: state.status,
+    stepIndex: state.stepIndex,
+    lapses: state.lapses,
+    previousInterval: state.previousInterval,
+    isLeech: state.isLeech,
+    lastReviewed: state.lastReviewed ? state.lastReviewed.toISOString() : null,
+    nextReview: state.nextReview ? state.nextReview.toISOString() : null,
+  };
+}
+
+function normalizeSerializedState(state?: SerializedCardState | null): SerializedCardState {
+  if (!state) {
+    return {
+      easeFactor: 2.5,
+      interval: 0,
+      repetitions: 0,
+      status: 'new',
+      stepIndex: 0,
+      lapses: 0,
+      previousInterval: 0,
+      isLeech: false,
+      lastReviewed: null,
+      nextReview: null,
+    };
+  }
+
+  return {
+    easeFactor: Number.isFinite(state.easeFactor) ? state.easeFactor : 2.5,
+    interval: Number.isFinite(state.interval) ? state.interval : 0,
+    repetitions: Number.isFinite(state.repetitions) ? state.repetitions : 0,
+    status: state.status ?? 'new',
+    stepIndex: Number.isFinite(state.stepIndex) ? state.stepIndex : 0,
+    lapses: Number.isFinite(state.lapses) ? state.lapses : 0,
+    previousInterval: Number.isFinite(state.previousInterval) ? state.previousInterval : 0,
+    isLeech: Boolean(state.isLeech),
+    lastReviewed: typeof state.lastReviewed === 'string' ? state.lastReviewed : null,
+    nextReview: typeof state.nextReview === 'string' ? state.nextReview : null,
   };
 }

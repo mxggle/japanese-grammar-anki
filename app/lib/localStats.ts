@@ -417,10 +417,6 @@ class LocalStatsManager {
 
     // Track previous ease factor for this card
     const cardKey = `ease_${this.userId}_${cardId}`;
-    const previousEase = localStorage.getItem(cardKey);
-    const previousEaseValue = previousEase ? parseFloat(previousEase) : 2.5;
-
-    // Update the ease factor for this card
     localStorage.setItem(cardKey, easeFactor.toString());
 
     // Recalculate mastered and difficulty cards

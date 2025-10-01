@@ -15,6 +15,8 @@ const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY,
 });
 
+let cachedCards: GrammarCard[] | null = null;
+
 async function getOrCreateUser(clerkUserId: string) {
   const existingUser = await db.user.findUnique({
     where: { clerkId: clerkUserId }
@@ -38,9 +40,14 @@ async function getOrCreateUser(clerkUserId: string) {
 }
 
 function loadCardData(): GrammarCard[] {
+  if (cachedCards) {
+    return cachedCards;
+  }
+
   const dataPath = path.join(process.cwd(), 'public/data/anki_optimized_data.json');
   const raw = fs.readFileSync(dataPath, 'utf8');
-  return JSON.parse(raw) as GrammarCard[];
+  cachedCards = JSON.parse(raw) as GrammarCard[];
+  return cachedCards;
 }
 
 function resolveLimit(value: number | undefined, fallback: number): number {
@@ -62,13 +69,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json().catch(() => ({}));
-    const { settings: settingsInput, limit } = body as {
+    const { settings: settingsInput, limit, mode } = body as {
       settings?: Partial<AnkiSettings>;
       limit?: number;
+      mode?: 'study' | 'review' | 'browse';
     };
 
     const user = await getOrCreateUser(clerkUserId);
     const settings = normalizeSettings(settingsInput ?? defaultAnkiSettings);
+    const sessionMode = mode ?? 'study';
 
     const [progressList, todayStats] = await Promise.all([
       db.cardProgress.findMany({
@@ -128,7 +137,7 @@ export async function POST(request: NextRequest) {
       : reviewDue.slice(0, remainingReviews);
 
     const newCards: GrammarCard[] = [];
-    if (remainingNew !== 0) {
+    if (sessionMode === 'study' && remainingNew !== 0) {
       for (const card of cards) {
         if (!progressByCard.has(card.id)) {
           newCards.push(card);
@@ -153,8 +162,10 @@ export async function POST(request: NextRequest) {
       queue.push({ type: 'review', card, progress });
     }
 
-    for (const card of newCards) {
-      queue.push({ type: 'new', card, progress: null });
+    if (sessionMode === 'study') {
+      for (const card of newCards) {
+        queue.push({ type: 'new', card, progress: null });
+      }
     }
 
     const finalLimit = typeof limit === 'number' && limit > 0 ? limit : undefined;
@@ -188,8 +199,10 @@ export async function POST(request: NextRequest) {
           learningDue: learningDue.length,
           reviewDue: reviewDue.length,
           reviewSelected: selectedReview.length,
-          newAvailable: remainingNew === Number.POSITIVE_INFINITY ? newCards.length : remainingNew,
-          newSelected: newCards.length
+          newAvailable: sessionMode === 'study'
+            ? (remainingNew === Number.POSITIVE_INFINITY ? newCards.length : remainingNew)
+            : 0,
+          newSelected: sessionMode === 'study' ? newCards.length : 0
         }
       }
     });

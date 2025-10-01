@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser, SignInButton } from '@clerk/nextjs';
+import { SignInButton } from '@clerk/nextjs';
 
 interface LoginPromptProps {
   isOpen: boolean;

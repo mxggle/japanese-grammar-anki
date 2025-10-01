@@ -7,6 +7,7 @@ import {
   cardProgressToState,
   normalizeSettings,
   type AnkiSettings,
+  type CardStatus,
 } from '@/app/lib/srs/ankiScheduler';
 
 const clerkClient = createClerkClient({
@@ -35,7 +36,7 @@ async function getOrCreateUser(clerkUserId: string) {
   });
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { userId: clerkUserId } = await auth();
 
@@ -86,6 +87,19 @@ export async function GET(request: NextRequest) {
   }
 }
 
+interface SerializedState {
+  easeFactor: number;
+  interval: number;
+  repetitions: number;
+  status: CardStatus;
+  stepIndex: number;
+  lapses: number;
+  previousInterval: number;
+  isLeech?: boolean;
+  lastReviewed?: string | null;
+  nextReview?: string | null;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { userId: clerkUserId } = await auth();
@@ -102,9 +116,20 @@ export async function POST(request: NextRequest) {
       grade: number;
       studyTimeSeconds?: number;
       settings?: Partial<AnkiSettings>;
+      state?: SerializedState;
+      learnedNewCard?: boolean;
+      isReviewCard?: boolean;
     };
 
-    const { cardId, grade, studyTimeSeconds, settings: settingsInput } = body;
+    const {
+      cardId,
+      grade,
+      studyTimeSeconds,
+      settings: settingsInput,
+      state: providedState,
+      learnedNewCard: learnedNewCardInput,
+      isReviewCard: isReviewCardInput,
+    } = body;
 
     if (!cardId || grade === undefined) {
       return NextResponse.json(
@@ -140,14 +165,23 @@ export async function POST(request: NextRequest) {
 
     const now = new Date();
     const settings = normalizeSettings(settingsInput);
-    const schedulingResult = scheduleCard({
-      previousState: cardProgressToState(existingProgress),
-      grade: grade as 0 | 1 | 2 | 3,
-      settings,
-      now,
-    });
 
-    const persistence = stateToPersistence(schedulingResult.state);
+    let schedulingResult: ReturnType<typeof scheduleCard> | null = null;
+    let persistence = providedState ? deserializeState(providedState, now) : null;
+
+    if (!persistence) {
+      schedulingResult = scheduleCard({
+        previousState: cardProgressToState(existingProgress),
+        grade: grade as 0 | 1 | 2 | 3,
+        settings,
+        now,
+      });
+      persistence = stateToPersistence(schedulingResult.state);
+    }
+
+    if (!persistence) {
+      throw new Error('Unable to determine card state');
+    }
 
     const totalReviews = (existingProgress?.totalReviews ?? 0) + 1;
     const correctCount = (existingProgress?.correctCount ?? 0) + (grade >= 2 ? 1 : 0);
@@ -165,87 +199,92 @@ export async function POST(request: NextRequest) {
       isLeech: persistence.isLeech,
       lastReviewed: persistence.lastReviewed ?? now,
       nextReview: persistence.nextReview,
+      version: (existingProgress?.version ?? 0) + 1,
       correctCount,
       incorrectCount,
       totalReviews,
       averageGrade
     };
+    const learnedNewCard = learnedNewCardInput ?? (schedulingResult ? (schedulingResult.wasNewCard && schedulingResult.state.status !== 'new') : !existingProgress);
+    const isReviewCard = isReviewCardInput ?? Boolean(existingProgress && (existingProgress.status === 'review' || existingProgress.status === 'relearning'));
 
-    const cardProgress = existingProgress
-      ? await db.cardProgress.update({
-          where: {
-            userId_cardId: {
+    const result = await db.$transaction(async (tx) => {
+      const cardProgress = existingProgress
+        ? await tx.cardProgress.update({
+            where: {
+              userId_cardId: {
+                userId: user.id,
+                cardId
+              }
+            },
+            data: progressPayload
+          })
+        : await tx.cardProgress.create({
+            data: {
               userId: user.id,
-              cardId
+              cardId,
+              ...progressPayload
             }
-          },
-          data: progressPayload
-        })
-      : await db.cardProgress.create({
-          data: {
-            userId: user.id,
-            cardId,
-            ...progressPayload
-          }
-        });
+          });
 
-    await db.userStats.upsert({
-      where: { userId: user.id },
-      create: {
-        userId: user.id,
-        totalCardsStudied: 1,
-        totalCorrectAnswers: grade >= 2 ? 1 : 0,
-        totalIncorrectAnswers: grade < 2 ? 1 : 0,
-        totalStudyTime: studyTimeSeconds ?? 0,
-        totalSessions: 0,
-        averageAccuracy: grade >= 2 ? 100 : 0,
-        currentStreak: grade >= 2 ? 1 : 0,
-        longestStreak: grade >= 2 ? 1 : 0,
-        cardsPerDay: 1,
-        studyTimePerDay: studyTimeSeconds ?? 0,
-        masteredCards: persistence.easeFactor > 2.8 ? 1 : 0,
-        difficultyCards: persistence.easeFactor < 2.0 ? 1 : 0,
-        lastStudyDate: now
-      },
-      update: {
-        totalCardsStudied: { increment: 1 },
-        totalCorrectAnswers: { increment: grade >= 2 ? 1 : 0 },
-        totalIncorrectAnswers: { increment: grade < 2 ? 1 : 0 },
-        totalStudyTime: { increment: studyTimeSeconds ?? 0 },
-        lastStudyDate: now
-      }
-    });
-
-    const todayIso = new Date().toISOString().split('T')[0];
-    const isReviewCard = Boolean(existingProgress && (existingProgress.status === 'review' || existingProgress.status === 'relearning'));
-    const learnedNewCard = schedulingResult.wasNewCard && schedulingResult.state.status !== 'new';
-
-    await db.dailyStats.upsert({
-      where: {
-        userId_date: {
+      await tx.userStats.upsert({
+        where: { userId: user.id },
+        create: {
           userId: user.id,
-          date: new Date(todayIso)
+          totalCardsStudied: 1,
+          totalCorrectAnswers: grade >= 2 ? 1 : 0,
+          totalIncorrectAnswers: grade < 2 ? 1 : 0,
+          totalStudyTime: studyTimeSeconds ?? 0,
+          totalSessions: 0,
+          averageAccuracy: grade >= 2 ? 100 : 0,
+          currentStreak: grade >= 2 ? 1 : 0,
+          longestStreak: grade >= 2 ? 1 : 0,
+          cardsPerDay: 1,
+          studyTimePerDay: studyTimeSeconds ?? 0,
+          masteredCards: persistence.easeFactor > 2.8 ? 1 : 0,
+          difficultyCards: persistence.easeFactor < 2.0 ? 1 : 0,
+          lastStudyDate: now
+        },
+        update: {
+          ...(learnedNewCard ? { totalCardsStudied: { increment: 1 } } : {}),
+          totalCorrectAnswers: { increment: grade >= 2 ? 1 : 0 },
+          totalIncorrectAnswers: { increment: grade < 2 ? 1 : 0 },
+          totalStudyTime: { increment: studyTimeSeconds ?? 0 },
+          lastStudyDate: now
         }
-      },
-      create: {
-        userId: user.id,
-        date: new Date(todayIso),
-        cardsStudied: 1,
-        correctAnswers: grade >= 2 ? 1 : 0,
-        incorrectAnswers: grade < 2 ? 1 : 0,
-        studyTime: studyTimeSeconds ?? 0,
-        sessionsCount: 0,
-        newCardsLearned: learnedNewCard ? 1 : 0,
-        reviewsCompleted: isReviewCard ? 1 : 0
-      },
-      update: {
-        cardsStudied: { increment: 1 },
-        correctAnswers: { increment: grade >= 2 ? 1 : 0 },
-        incorrectAnswers: { increment: grade < 2 ? 1 : 0 },
-        studyTime: { increment: studyTimeSeconds ?? 0 },
-        newCardsLearned: { increment: learnedNewCard ? 1 : 0 },
-        reviewsCompleted: { increment: isReviewCard ? 1 : 0 }
-      }
+      });
+
+      const todayIso = new Date().toISOString().split('T')[0];
+
+      await tx.dailyStats.upsert({
+        where: {
+          userId_date: {
+            userId: user.id,
+            date: new Date(todayIso)
+          }
+        },
+        create: {
+          userId: user.id,
+          date: new Date(todayIso),
+          cardsStudied: 1,
+          correctAnswers: grade >= 2 ? 1 : 0,
+          incorrectAnswers: grade < 2 ? 1 : 0,
+          studyTime: studyTimeSeconds ?? 0,
+          sessionsCount: 0,
+          newCardsLearned: learnedNewCard ? 1 : 0,
+          reviewsCompleted: isReviewCard ? 1 : 0
+        },
+        update: {
+          cardsStudied: { increment: 1 },
+          correctAnswers: { increment: grade >= 2 ? 1 : 0 },
+          incorrectAnswers: { increment: grade < 2 ? 1 : 0 },
+          studyTime: { increment: studyTimeSeconds ?? 0 },
+          ...(learnedNewCard ? { newCardsLearned: { increment: 1 } } : {}),
+          ...(isReviewCard ? { reviewsCompleted: { increment: 1 } } : {})
+        }
+      });
+
+      return cardProgress;
     });
 
     return NextResponse.json({
@@ -253,21 +292,21 @@ export async function POST(request: NextRequest) {
       data: {
         cardId,
         userId: user.id,
-        interval: cardProgress.interval,
-        easeFactor: cardProgress.easeFactor,
-        repetitions: cardProgress.repetitions,
-        status: cardProgress.status,
-        stepIndex: cardProgress.stepIndex,
-        lapses: cardProgress.lapses,
-        previousInterval: cardProgress.previousInterval,
-        isLeech: cardProgress.isLeech,
-        lastReviewed: cardProgress.lastReviewed?.toISOString(),
-        nextReview: cardProgress.nextReview?.toISOString(),
+        interval: result.interval,
+        easeFactor: result.easeFactor,
+        repetitions: result.repetitions,
+        status: result.status,
+        stepIndex: result.stepIndex,
+        lapses: result.lapses,
+        previousInterval: result.previousInterval,
+        isLeech: result.isLeech,
+        lastReviewed: result.lastReviewed?.toISOString(),
+        nextReview: result.nextReview?.toISOString(),
         grade,
-        correctCount: cardProgress.correctCount,
-        incorrectCount: cardProgress.incorrectCount,
-        totalReviews: cardProgress.totalReviews,
-        averageGrade: cardProgress.averageGrade,
+        correctCount: result.correctCount,
+        incorrectCount: result.incorrectCount,
+        totalReviews: result.totalReviews,
+        averageGrade: result.averageGrade,
         studyTimeSeconds: studyTimeSeconds ?? 0,
         scheduling: schedulingResult
       }
@@ -279,4 +318,21 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function deserializeState(state: SerializedState, fallbackDate: Date) {
+  const toDate = (value?: string | null) => (value ? new Date(value) : null);
+
+  return {
+    easeFactor: state.easeFactor,
+    interval: state.interval,
+    repetitions: state.repetitions,
+    status: state.status,
+    stepIndex: state.stepIndex,
+    lapses: state.lapses,
+    previousInterval: state.previousInterval,
+    isLeech: Boolean(state.isLeech),
+    lastReviewed: toDate(state.lastReviewed) ?? fallbackDate,
+    nextReview: toDate(state.nextReview)
+  };
 }
