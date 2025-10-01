@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  clerkId   String   @unique
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cardProgress  CardProgress[]
+  studySessions StudySession[]
+  dailyStats    DailyStats[]
+  userStats     UserStats?
+
+  @@map("users")
+}
+
+model CardProgress {
+  id              String   @id @default(uuid())
+  userId          String
+  cardId          String   // This will be the original card ID from JSON data
+
+  easeFactor      Float    @default(2.5)
+  interval        Float    @default(1)
+  repetitions     Int      @default(0)
+  status          String   @default("new")
+  stepIndex       Int      @default(0)
+  lapses          Int      @default(0)
+  previousInterval Float   @default(0)
+  isLeech         Boolean  @default(false)
+  version         Int      @default(1)
+  lastSyncedDeviceId String?
+  sessionId       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lastReviewed    DateTime?
+  nextReview      DateTime?
+
+  // Learning statistics
+  correctCount    Int      @default(0)
+  incorrectCount  Int      @default(0)
+  averageGrade    Float    @default(0.0)
+  totalReviews    Int      @default(0)
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cardId])
+  @@map("card_progress")
+}
+
+model StudySession {
+  id               String   @id @default(uuid())
+  userId           String
+  startTime        DateTime @default(now())
+  endTime          DateTime?
+  cardsStudied     Int      @default(0)
+  correctAnswers   Int      @default(0)
+  incorrectAnswers Int      @default(0)
+  mode             String   // "study", "review", "browse"
+
+  // Session statistics
+  averageResponseTime Float? // in seconds
+  streakCount         Int    @default(0)
+  sessionScore        Float? // percentage correct
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("study_sessions")
+}
+
+model DailyStats {
+  id               String   @id @default(uuid())
+  userId           String
+  date             DateTime @default(now()) @db.Date
+
+  // Daily learning metrics
+  cardsStudied     Int      @default(0)
+  correctAnswers   Int      @default(0)
+  incorrectAnswers Int      @default(0)
+  studyTime        Int      @default(0) // in seconds
+  sessionsCount    Int      @default(0)
+  newCardsLearned  Int      @default(0)
+  reviewsCompleted Int      @default(0)
+
+  // Streak information
+  currentStreak    Int      @default(0)
+  longestStreak    Int      @default(0)
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@map("daily_stats")
+}
+
+model UserStats {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+
+  // Overall learning statistics
+  totalCardsStudied     Int      @default(0)
+  totalCorrectAnswers   Int      @default(0)
+  totalIncorrectAnswers Int      @default(0)
+  totalStudyTime        Int      @default(0) // in seconds
+  totalSessions         Int      @default(0)
+
+  // Proficiency metrics
+  averageAccuracy       Float    @default(0.0)
+  currentStreak         Int      @default(0)
+  longestStreak         Int      @default(0)
+
+  // Learning pace
+  cardsPerDay           Float    @default(0.0)
+  studyTimePerDay       Float    @default(0.0)
+
+  // Mastery levels
+  masteredCards         Int      @default(0) // Cards with ease factor > 2.8
+  difficultyCards       Int      @default(0) // Cards with ease factor < 2.0
+
+  // Time tracking
+  lastStudyDate         DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_stats")
+  // @@ignore
+}

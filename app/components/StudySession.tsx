@@ -5,10 +5,18 @@ import { useUser } from "@clerk/nextjs";
 import StudyCard, { GrammarCard } from "./StudyCard";
 import LoginPrompt from "./LoginPrompt";
 import { optimizedStorage } from "@/app/lib/optimizedStorage";
+import { userSettingsManager } from "@/app/lib/userSettings";
 
 const getDailyLimitStorageKey = (userId: string) => {
   const today = new Date().toISOString().split("T")[0];
   return `study_limit_${userId}_${today}`;
+};
+
+type StudySessionCard = GrammarCard & {
+  __meta?: {
+    type: 'learning' | 'review' | 'new';
+    progress?: Record<string, unknown> | null;
+  };
 };
 
 interface StudySessionProps {
@@ -18,7 +26,7 @@ interface StudySessionProps {
 
 export default function StudySession({ mode, onBack }: StudySessionProps) {
   const { user } = useUser();
-  const [cards, setCards] = useState<GrammarCard[]>([]);
+  const [cards, setCards] = useState<StudySessionCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -28,7 +36,6 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
   const [dailyLimit, setDailyLimit] = useState(20);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [showGoalCompleteModal, setShowGoalCompleteModal] = useState(false);
-  const [sessionStartTime, setSessionStartTime] = useState<number>(Date.now());
   const [cardStartTime, setCardStartTime] = useState<number>(Date.now());
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isExiting, setIsExiting] = useState(false);
@@ -42,11 +49,18 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
     unsyncedData: false,
   });
 
-  const persistDailyLimit = (limit: number) => {
+  const persistDailyLimit = useCallback((limit: number) => {
     if (typeof window === 'undefined' || !user) return;
     const key = getDailyLimitStorageKey(user.id);
     window.localStorage.setItem(key, String(limit));
-  };
+  }, [user]);
+
+  const updateSyncStatus = useCallback(() => {
+    setSyncStatus({
+      offline: optimizedStorage.isOffline(),
+      unsyncedData: optimizedStorage.hasUnsyncedData(),
+    });
+  }, []);
 
   // Initialize user and start study session
   useEffect(() => {
@@ -80,7 +94,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
 
       updateSyncStatus();
     }
-  }, [user, mode]);
+  }, [user, mode, persistDailyLimit, updateSyncStatus]);
 
   // Update sync status periodically
   useEffect(() => {
@@ -95,14 +109,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
     const interval = setInterval(updateStatus, 5000); // Update every 5 seconds
 
     return () => clearInterval(interval);
-  }, []);
-
-  const updateSyncStatus = () => {
-    setSyncStatus({
-      offline: optimizedStorage.isOffline(),
-      unsyncedData: optimizedStorage.hasUnsyncedData(),
-    });
-  };
+  }, [updateSyncStatus]);
 
   const handleBackWithSync = async () => {
     if (!user || !sessionId) {
@@ -133,25 +140,36 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
   const loadCards = useCallback(async () => {
     try {
       setLoading(true);
-      let url = "/api/cards";
+      if (mode === "study" || mode === "review") {
+        const settings = userSettingsManager.getSrsSettings();
+        const requestLimit = Math.max(dailyLimit - studiedToday, 1) + 10;
+        const response = await fetch('/api/study-queue', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ settings, limit: requestLimit })
+        });
+        const result = await response.json();
 
-      if (mode === "study") {
-        url += "?limit=20"; // Study mode: load 20 cards
-      } else if (mode === "review") {
-        // For review mode, we would check which cards need review
-        // For now, just load all cards
-      }
-
-      const response = await fetch(url);
-      const result = await response.json();
-
-      if (result.success) {
-        setCards(result.data);
-        setCurrentIndex(0);
-        setShowAnswer(false);
-        setCardStartTime(Date.now()); // Start timing for first card
+        if (result.success) {
+          setCards(result.data ?? []);
+          setCurrentIndex(0);
+          setShowAnswer(false);
+          setCardStartTime(Date.now());
+        } else {
+          setError(result.error ?? 'Unable to load study queue');
+        }
       } else {
-        setError(result.error);
+        const response = await fetch('/api/cards');
+        const result = await response.json();
+
+        if (result.success) {
+          setCards(result.data ?? []);
+          setCurrentIndex(0);
+          setShowAnswer(false);
+          setCardStartTime(Date.now());
+        } else {
+          setError(result.error);
+        }
       }
     } catch (err) {
       setError("Failed to load cards");
@@ -159,7 +177,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
     } finally {
       setLoading(false);
     }
-  }, [mode]);
+  }, [mode, dailyLimit, studiedToday]);
 
   useEffect(() => {
     if (hasPerformedInitialLoadRef.current && lastLoadedModeRef.current === mode) {
@@ -207,6 +225,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, showAnswer, cards.length, handleBackWithSync]);
 
   const handleAnswer = async (grade: number) => {
