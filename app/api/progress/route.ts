@@ -167,19 +167,19 @@ export async function POST(request: NextRequest) {
     const settings = normalizeSettings(settingsInput);
 
     let schedulingResult: ReturnType<typeof scheduleCard> | null = null;
-    let persistence = providedState ? deserializeState(providedState, now) : null;
+    let persistenceState = providedState ? deserializeState(providedState, now) : null;
 
-    if (!persistence) {
+    if (!persistenceState) {
       schedulingResult = scheduleCard({
         previousState: cardProgressToState(existingProgress),
         grade: grade as 0 | 1 | 2 | 3,
         settings,
         now,
       });
-      persistence = stateToPersistence(schedulingResult.state);
+      persistenceState = stateToPersistence(schedulingResult.state);
     }
 
-    if (!persistence) {
+    if (!persistenceState) {
       throw new Error('Unable to determine card state');
     }
 
@@ -189,16 +189,16 @@ export async function POST(request: NextRequest) {
     const averageGrade = ((existingProgress?.averageGrade ?? 0) * (existingProgress?.totalReviews ?? 0) + grade) / totalReviews;
 
     const progressPayload = {
-      easeFactor: persistence.easeFactor,
-      interval: persistence.interval,
-      repetitions: persistence.repetitions,
-      status: persistence.status,
-      stepIndex: persistence.stepIndex,
-      lapses: persistence.lapses,
-      previousInterval: persistence.previousInterval,
-      isLeech: persistence.isLeech,
-      lastReviewed: persistence.lastReviewed || now,
-      nextReview: persistence.nextReview,
+      easeFactor: persistenceState.easeFactor,
+      interval: persistenceState.interval,
+      repetitions: persistenceState.repetitions,
+      status: persistenceState.status,
+      stepIndex: persistenceState.stepIndex,
+      lapses: persistenceState.lapses,
+      previousInterval: persistenceState.previousInterval,
+      isLeech: persistenceState.isLeech,
+      lastReviewed: persistenceState.lastReviewed || now,
+      nextReview: persistenceState.nextReview,
       version: (existingProgress?.version ?? 0) + 1,
       correctCount,
       incorrectCount,
@@ -241,8 +241,8 @@ export async function POST(request: NextRequest) {
           longestStreak: grade >= 2 ? 1 : 0,
           cardsPerDay: 1,
           studyTimePerDay: studyTimeSeconds ?? 0,
-          masteredCards: persistence.easeFactor > 2.8 ? 1 : 0,
-          difficultyCards: persistence.easeFactor < 2.0 ? 1 : 0,
+          masteredCards: persistenceState.easeFactor > 2.8 ? 1 : 0,
+          difficultyCards: persistenceState.easeFactor < 2.0 ? 1 : 0,
           lastStudyDate: now
         },
         update: {
