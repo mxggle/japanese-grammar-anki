@@ -197,7 +197,7 @@ export async function POST(request: NextRequest) {
       lapses: persistence.lapses,
       previousInterval: persistence.previousInterval,
       isLeech: persistence.isLeech,
-      lastReviewed: persistence.lastReviewed ?? now,
+      lastReviewed: persistence.lastReviewed || now,
       nextReview: persistence.nextReview,
       version: (existingProgress?.version ?? 0) + 1,
       correctCount,
