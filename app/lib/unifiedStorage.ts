@@ -283,7 +283,11 @@ class UnifiedStorageManager {
     const localStats = localStatsManager.getDailyStats(days);
 
     if (localStats && localStats.length > 0) {
-      return localStats;
+      return localStats.map(stat => ({
+        ...stat,
+        reviewsCompleted: stat.reviewsCompleted ?? 0,
+        newCardsLearned: stat.newCardsLearned ?? 0
+      }));
     }
 
     try {

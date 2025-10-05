@@ -135,14 +135,6 @@ export default function StudyCard({
                   <div className="text-2xl font-medium leading-relaxed text-amber-900 sm:text-3xl japanese-text card-text">
                     {card.front_sentence}
                   </div>
-                  {card.reading_furigana && (
-                    <div className="text-base text-amber-700">
-                      <ruby dangerouslySetInnerHTML={renderRichFormation(card.reading_furigana)} />
-                    </div>
-                  )}
-                  {card.translation && (
-                    <p className="text-lg text-amber-800">{card.translation}</p>
-                  )}
                   {card.chinese_meaning && (
                     <p className="text-sm text-amber-600">{card.chinese_meaning}</p>
                   )}
@@ -153,26 +145,17 @@ export default function StudyCard({
                     {card.back_sentence}
                   </div>
 
-                  {card.reading_furigana && (
-                    <section className="rounded-2xl bg-sky-50 p-4 text-amber-900">
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-sky-600">Reading</h3>
-                      <div
-                        className="mt-2 text-base japanese-text"
-                        dangerouslySetInnerHTML={renderRichFormation(card.reading_furigana)}
-                      />
-                    </section>
-                  )}
 
                   {card.translation && (
                     <section className="rounded-2xl bg-emerald-50 p-4 text-emerald-900">
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-emerald-600">Translation</h3>
+                      <h3 className="text-xs font-semibold uppercase tracking-wide text-emerald-600">翻译</h3>
                       <p className="mt-2 text-base">{card.translation}</p>
                     </section>
                   )}
 
                   {card.rich_grammar_formation && (
                     <section className="rounded-2xl bg-indigo-50 p-4 text-indigo-900">
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-indigo-600">Grammar Formation</h3>
+                      <h3 className="text-xs font-semibold uppercase tracking-wide text-indigo-600">接续规则</h3>
                       <div
                         className="mt-2 text-sm leading-relaxed"
                         dangerouslySetInnerHTML={renderRichFormation(card.rich_grammar_formation)}

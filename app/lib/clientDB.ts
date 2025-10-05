@@ -75,8 +75,8 @@ class ClientDatabase {
         const data: StoredCardProgress = {
           ...(existing ?? {}),
           userId,
-          cardId,
           ...progress,
+          cardId,
           lastUpdated: new Date().toISOString()
         };
 
@@ -91,7 +91,7 @@ class ClientDatabase {
     });
   }
 
-  async getCardProgress(userId: string, cardId?: string): Promise<StoredCardProgress | StoredCardProgress[]> {
+  async getCardProgress(userId: string, cardId?: string): Promise<StoredCardProgress | StoredCardProgress[] | undefined> {
     if (!this.db) await this.init();
 
     return new Promise((resolve, reject) => {
@@ -158,8 +158,8 @@ class ClientDatabase {
         const data: StoredDailyStats = {
           ...existing,
           userId,
-          date,
           ...stats,
+          date,
           lastUpdated: new Date().toISOString()
         };
 

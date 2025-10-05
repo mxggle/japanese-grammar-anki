@@ -406,7 +406,7 @@ export default function GrammarQuery({ onBack }: GrammarQueryProps) {
                 className="flex-1 px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
               <button
-                onClick={handleSearch}
+                onClick={() => handleSearch()}
                 className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
               >
                 搜索

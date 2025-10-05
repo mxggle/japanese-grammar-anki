@@ -168,7 +168,7 @@ class OptimizedStorageManager {
     const timestamp = new Date().toISOString();
     const settings = userSettingsManager.getSrsSettings();
     const previousLocal = localStatsManager.getCardProgress(cardId);
-    const previousState = previousLocal ? mapLocalProgressToState(previousLocal, settings) : undefined;
+    const previousState = previousLocal ? mapLocalProgressToState(previousLocal as unknown as Record<string, unknown>, settings) : undefined;
     const schedulingResult = scheduleCard({
       previousState,
       grade: Math.max(0, Math.min(3, grade)) as 0 | 1 | 2 | 3,

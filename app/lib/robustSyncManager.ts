@@ -12,6 +12,7 @@ export interface SyncableEntity {
   lastModified: string;
   syncStatus: 'pending' | 'syncing' | 'synced' | 'conflict';
   checksum?: string;
+  lastSynced?: string;
 }
 
 export interface ProgressRecord extends SyncableEntity {
@@ -130,6 +131,7 @@ class RobustSyncManager {
 
       const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
       const updateNetworkQuality = () => {
+        if (!connection) return;
         const effectiveType = connection.effectiveType;
         if (effectiveType === '4g') {
           this.networkQuality = 'good';
@@ -228,7 +230,7 @@ class RobustSyncManager {
 
     const settings = userSettingsManager.getSrsSettings();
     const existingProgress = await this.getExistingProgress(cardId);
-    const previousState = existingProgress ? mapStoredProgressToState(existingProgress, settings) : undefined;
+    const previousState = existingProgress ? mapStoredProgressToState(existingProgress as unknown as Record<string, unknown>, settings) : undefined;
     const schedulingResult = scheduleCard({
       previousState,
       grade: Math.max(0, Math.min(3, grade)) as 0 | 1 | 2 | 3,
@@ -255,6 +257,7 @@ class RobustSyncManager {
       nextReview: state.nextReview ?? null,
       studyTimeSeconds,
       sessionId,
+      settings,
       version: (existingProgress?.version ?? 0) + 1,
       lastModified: now,
       syncStatus: 'pending',
@@ -336,7 +339,7 @@ class RobustSyncManager {
 
       // Process each group with conflict resolution
       for (const [entityType, ops] of Object.entries(groupedOps)) {
-        await this.processOperationGroup(entityType, ops);
+        await this.processOperationGroup(entityType as 'progress' | 'session' | 'stats', ops);
       }
 
       // Update metrics
@@ -349,7 +352,6 @@ class RobustSyncManager {
     } catch (error) {
       console.error('Sync failed:', error);
       this.metrics.syncErrors.push(`${new Date().toISOString()}: ${error}`);
-      this.handleSyncFailure(error);
       return false;
     } finally {
       this.syncInProgress = false;
@@ -652,7 +654,23 @@ class RobustSyncManager {
   private async saveProgressLocally(progress: ProgressRecord): Promise<void> {
     try {
       // Save to IndexedDB
-      await clientDB.saveCardProgress(this.userId!, progress.cardId, progress);
+      const userProgress = {
+        cardId: progress.cardId,
+        grade: progress.grade,
+        timestamp: progress.lastModified,
+        interval: progress.interval,
+        easeFactor: progress.easeFactor,
+        repetitions: progress.repetitions,
+        studyTimeSeconds: progress.studyTimeSeconds,
+        syncedToStats: false,
+        status: progress.status,
+        stepIndex: progress.stepIndex,
+        lapses: progress.lapses,
+        previousInterval: progress.previousInterval,
+        isLeech: progress.isLeech,
+        nextReview: progress.nextReview
+      };
+      await clientDB.saveCardProgress(this.userId!, progress.cardId, userProgress);
 
       // Save to localStorage as backup
       const key = `progress_${this.userId}_${progress.cardId}`;
@@ -664,7 +682,8 @@ class RobustSyncManager {
 
   private async getExistingProgress(cardId: string): Promise<ProgressRecord | null> {
     try {
-      return await clientDB.getCardProgress(this.userId!, cardId) as ProgressRecord | null;
+      const result = await clientDB.getCardProgress(this.userId!, cardId);
+      return (result && !Array.isArray(result)) ? result as unknown as ProgressRecord : null;
     } catch (error) {
       console.warn('Failed to load progress from IndexedDB, checking localStorage fallback:', error);
       const key = `progress_${this.userId}_${cardId}`;
@@ -675,11 +694,24 @@ class RobustSyncManager {
 
   private async updateLocalProgress(progressId: string, serverData: ProgressRecord): Promise<void> {
     try {
-      await clientDB.saveCardProgress(this.userId!, serverData.cardId, {
-        ...serverData,
-        syncStatus: 'synced',
+      const userProgress = {
+        cardId: serverData.cardId,
+        grade: serverData.grade,
+        timestamp: serverData.lastModified,
+        interval: serverData.interval,
+        easeFactor: serverData.easeFactor,
+        repetitions: serverData.repetitions,
+        studyTimeSeconds: serverData.studyTimeSeconds,
+        syncedToStats: true,
+        status: serverData.status,
+        stepIndex: serverData.stepIndex,
+        lapses: serverData.lapses,
+        previousInterval: serverData.previousInterval,
+        isLeech: serverData.isLeech,
+        nextReview: serverData.nextReview,
         lastSynced: new Date().toISOString()
-      });
+      };
+      await clientDB.saveCardProgress(this.userId!, serverData.cardId, userProgress);
     } catch (error) {
       console.error('Failed to update local progress:', error);
     }

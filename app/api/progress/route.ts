@@ -176,7 +176,11 @@ export async function POST(request: NextRequest) {
         settings,
         now,
       });
-      persistenceState = stateToPersistence(schedulingResult.state);
+      const tempState = stateToPersistence(schedulingResult.state);
+      persistenceState = {
+        ...tempState,
+        lastReviewed: tempState.lastReviewed ?? now,
+      };
     }
 
     if (!persistenceState) {
