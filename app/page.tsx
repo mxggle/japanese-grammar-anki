@@ -17,7 +17,7 @@ export default function Home() {
   >("menu");
   const [pendingView, setPendingView] = useState<"study" | "review" | "browse" | "stats" | "query" | "settings" | null>(null);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [guestAcknowledgements, setGuestAcknowledgements] = useState<Partial<Record<"study" | "review" | "browse" | "query" | "settings", boolean>>>({});
+  const [guestAcknowledgements, setGuestAcknowledgements] = useState<Partial<Record<"study" | "review" | "browse" | "query" | "settings" | "stats", boolean>>>({});
 
   useEffect(() => {
     if (user && pendingView) {
@@ -41,7 +41,9 @@ export default function Home() {
         return;
       }
 
-      if (target !== "stats" && !guestAcknowledgements[target]) {
+      // For non-stats targets, check guest acknowledgement
+      const nonStatsTarget = target as "study" | "review" | "browse" | "query" | "settings";
+      if (!guestAcknowledgements[nonStatsTarget]) {
         setPendingView(target);
         setShowLoginPrompt(true);
         return;
