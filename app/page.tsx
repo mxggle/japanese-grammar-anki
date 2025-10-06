@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { useUser, SignInButton, SignOutButton } from '@clerk/nextjs'
 import StudySession from "./components/StudySession";
@@ -8,19 +8,55 @@ import StatsDisplay from "./components/StatsDisplay";
 import GrammarQuery from "./components/GrammarQuery";
 import SyncStatus from "./components/SyncStatus";
 import UserSettings from "./components/UserSettings";
+import LoginPrompt from "./components/LoginPrompt";
 
 export default function Home() {
   const { user, isLoaded } = useUser()
   const [currentView, setCurrentView] = useState<
     "menu" | "study" | "review" | "browse" | "stats" | "query" | "settings"
   >("menu");
+  const [pendingView, setPendingView] = useState<"study" | "review" | "browse" | "stats" | "query" | "settings" | null>(null);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [guestAcknowledgements, setGuestAcknowledgements] = useState<Partial<Record<"study" | "review" | "browse" | "query" | "settings", boolean>>>({});
+
+  useEffect(() => {
+    if (user && pendingView) {
+      // After successful sign-in, continue to the desired view immediately.
+      setShowLoginPrompt(false);
+      if (pendingView !== "stats") {
+        setGuestAcknowledgements((prev) => ({ ...prev, [pendingView]: true }));
+      }
+      setCurrentView(pendingView);
+      setPendingView(null);
+    }
+  }, [user, pendingView]);
+
+  const handleNavigate = (
+    target: "study" | "review" | "browse" | "stats" | "query" | "settings"
+  ) => {
+    if (!user) {
+      if (target === "stats") {
+        setPendingView(target);
+        setShowLoginPrompt(true);
+        return;
+      }
+
+      if (target !== "stats" && !guestAcknowledgements[target]) {
+        setPendingView(target);
+        setShowLoginPrompt(true);
+        return;
+      }
+    }
+
+    setCurrentView(target);
+  };
 
   if (!isLoaded) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
-          <p className="text-amber-700">Loading...</p>
+          <p className="text-amber-700">加载中...</p>
         </div>
       </div>
     )
@@ -65,6 +101,30 @@ export default function Home() {
     },
   ];
 
+  const handleContinueAsGuest = () => {
+    if (!pendingView || pendingView === "stats") {
+      setShowLoginPrompt(false);
+      setPendingView(null);
+      return;
+    }
+
+    setGuestAcknowledgements((prev) => ({ ...prev, [pendingView]: true }));
+    setShowLoginPrompt(false);
+    setCurrentView(pendingView);
+    setPendingView(null);
+  };
+
+  const handleLoginPromptClose = () => {
+    if (pendingView && pendingView !== "stats") {
+      setGuestAcknowledgements((prev) => ({ ...prev, [pendingView]: true }));
+      setCurrentView(pendingView);
+    }
+    setShowLoginPrompt(false);
+    setPendingView(null);
+  };
+
+  const isStatsReminder = pendingView === "stats";
+
   if (currentView === "stats") {
     return <StatsDisplay onClose={() => setCurrentView("menu")} />;
   }
@@ -78,10 +138,14 @@ export default function Home() {
   }
 
   if (currentView !== "menu") {
+    const currentMode = currentView as "study" | "review" | "browse";
+    const guestAcknowledgedForMode = Boolean(user) || Boolean(guestAcknowledgements[currentMode]);
+
     return (
       <StudySession
-        mode={currentView as "study" | "review" | "browse"}
+        mode={currentMode}
         onBack={() => setCurrentView("menu")}
+        initialGuestAcknowledged={guestAcknowledgedForMode}
       />
     );
   }
@@ -96,7 +160,7 @@ export default function Home() {
         </div>
         <div className="relative max-w-6xl mx-auto px-6 py-8">
           {/* User Profile/Auth Section */}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 mb-6">
             <div className="flex items-center gap-3">
               {user?.imageUrl && (
                 <Image
@@ -111,29 +175,29 @@ export default function Home() {
                 {user ? (
                   <>
                     <p className="text-amber-900 font-medium">
-                      Welcome back, {user?.firstName || user?.emailAddresses[0]?.emailAddress}!
+                      欢迎回来，{user?.firstName || user?.emailAddresses[0]?.emailAddress}！
                     </p>
-                    <p className="text-amber-700 text-sm">Your progress is being saved</p>
+                    <p className="text-amber-700 text-sm">学习进度已自动保存</p>
                   </>
                 ) : (
                   <>
-                    <p className="text-amber-900 font-medium">Welcome to Japanese Grammar N2</p>
-                    <p className="text-amber-700 text-sm">Sign in to save your progress</p>
+                    <p className="text-amber-900 font-medium">欢迎来到日语语法 N2 学习</p>
+                    <p className="text-amber-700 text-sm">登录即可保存学习进度</p>
                   </>
                 )}
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex w-full gap-2 sm:w-auto sm:justify-end">
               {user ? (
                 <SignOutButton>
-                  <button className="px-4 py-2 bg-amber-100/80 hover:bg-amber-200/80 text-amber-900 rounded-lg border border-amber-200 transition-colors">
-                    Sign Out
+                  <button className="w-full px-4 py-2 bg-amber-100/80 hover:bg-amber-200/80 text-amber-900 rounded-lg border border-amber-200 transition-colors sm:w-auto">
+                    退出登录
                   </button>
                 </SignOutButton>
               ) : (
                 <SignInButton mode="modal">
-                  <button className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors shadow-md">
-                    Sign In to Save Progress
+                  <button className="w-full px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors shadow-md sm:w-auto">
+                    登录并保存进度
                   </button>
                 </SignInButton>
               )}
@@ -148,11 +212,11 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-bold mb-2 text-amber-900 drop-shadow-sm">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-amber-900 drop-shadow-sm">
               日语语法 N2
             </h1>
 
-            <p className="text-sm md:text-base text-amber-700 max-w-lg mx-auto leading-relaxed">
+            <p className="text-sm text-amber-700 max-w-lg mx-auto leading-relaxed sm:text-base">
               通过智能间隔重复算法和精美交互设计，让日语N2语法学习变得高效而愉悦
             </p>
           </div>
@@ -169,10 +233,10 @@ export default function Home() {
         )}
 
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-amber-900 mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-amber-900 mb-6">
             选择学习模式
           </h2>
-          <p className="text-xl text-amber-700 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-amber-700 max-w-3xl mx-auto leading-relaxed sm:text-xl">
             根据你的学习目标，选择最适合的学习方式开始你的日语语法之旅
           </p>
         </div>
@@ -226,31 +290,31 @@ export default function Home() {
               <button
                 key={item.id}
                 onClick={() =>
-                  setCurrentView(
+                  handleNavigate(
                     item.id as "study" | "review" | "browse" | "stats" | "query" | "settings"
                   )
                 }
-                className={`group relative ${colorScheme.bg} ${colorScheme.hover} rounded-xl p-10 border-l-6 ${colorScheme.border} shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 overflow-hidden text-left ${rotation}`}
+                className={`group relative ${colorScheme.bg} ${colorScheme.hover} rounded-xl p-6 sm:p-8 lg:p-10 border-l-6 ${colorScheme.border} shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 overflow-hidden text-left ${rotation}`}
                 style={{
                   animationDelay: `${index * 150}ms`,
                 }}
               >
                 {/* Icon */}
                 <div className="relative mb-8">
-                  <div className="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-300">
+                  <div className="text-4xl mb-6 transform group-hover:scale-125 transition-transform duration-300 sm:text-5xl">
                     {item.title.split(" ")[0]}
                   </div>
 
                   {/* Title */}
                   <h3
-                    className={`text-3xl font-bold ${colorScheme.text} mb-4 transition-colors duration-300`}
+                    className={`text-2xl font-bold ${colorScheme.text} mb-4 transition-colors duration-300 sm:text-3xl`}
                   >
                     {item.title.split(" ").slice(1).join(" ")}
                   </h3>
 
                   {/* Description */}
                   <p
-                    className={`${colorScheme.text} opacity-80 transition-colors duration-300 leading-relaxed text-lg`}
+                    className={`${colorScheme.text} opacity-80 transition-colors duration-300 leading-relaxed text-base sm:text-lg`}
                   >
                     {item.description}
                   </p>
@@ -289,7 +353,7 @@ export default function Home() {
 
       {/* Stats Section - Smaller */}
       <div className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           <div className="group bg-yellow-200 rounded-lg p-4 shadow-md border-l-4 border-yellow-400 hover:shadow-lg transition-all duration-300 text-center rotate-1 hover:rotate-0">
             <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mb-2 mx-auto">
               <span className="text-white text-sm">📚</span>
@@ -329,7 +393,7 @@ export default function Home() {
           </h3>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           <div className="bg-lime-200 rounded-lg p-4 border-l-4 border-lime-400 transition-all duration-300 rotate-1 hover:rotate-0">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-lime-500 rounded-full flex items-center justify-center">
@@ -413,7 +477,7 @@ export default function Home() {
             <h3 className="text-xl font-bold text-amber-100 mb-2">⌨️ 快捷键</h3>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
             <div className="bg-yellow-200 rounded-lg p-3 border-l-4 border-yellow-400 text-center rotate-1 hover:rotate-0 transition-all duration-300">
               <kbd className="inline-flex items-center px-3 py-1 bg-yellow-400 text-yellow-900 font-mono text-sm rounded border border-yellow-500">
                 Space
@@ -448,6 +512,36 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <LoginPrompt
+        isOpen={showLoginPrompt}
+        onClose={handleLoginPromptClose}
+        onContinueWithoutSaving={handleContinueAsGuest}
+        allowGuestContinue={!isStatsReminder}
+        title={isStatsReminder ? "统计数据仅对登录用户开放" : "登录后可同步学习进度"}
+        description={
+          isStatsReminder
+            ? "登录账号以查看完整的学习统计、复习趋势与设备间同步数据。"
+            : "登录账号即可在多设备之间同步保存学习进度、复习节奏和统计数据。未登录也可以先体验全部功能。"
+        }
+        icon={isStatsReminder ? "📊" : "🔐"}
+        continueLabel="暂不登录，先体验"
+        cancelLabel="稍后提醒我"
+        benefits={
+          isStatsReminder
+            ? [
+                "查看每日学习统计与趋势",
+                "追踪复习准确率与用时",
+                "跨设备保持进度一致",
+              ]
+            : [
+                "多设备自动同步学习进度",
+                "完整的学习统计与复习记录",
+                "自定义学习设置云端备份",
+                "离线学习后自动补同步",
+              ]
+        }
+      />
     </div>
   );
 }

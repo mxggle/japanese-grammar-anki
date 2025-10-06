@@ -22,9 +22,36 @@ type StudySessionCard = GrammarCard & {
 interface StudySessionProps {
   mode: "study" | "review" | "browse";
   onBack: () => void;
+  initialGuestAcknowledged?: boolean;
 }
 
-export default function StudySession({ mode, onBack }: StudySessionProps) {
+const localizeErrorMessage = (message?: string | null) => {
+  if (!message) {
+    return '发生未知错误，请稍后重试。';
+  }
+
+  if (/[\u4e00-\u9fa5]/.test(message)) {
+    return message;
+  }
+
+  const normalized = message.toLowerCase();
+
+  if (normalized.includes('unauthorized')) {
+    return '未登录状态暂不支持该操作，请先登录。';
+  }
+
+  if (normalized.includes('study queue')) {
+    return '学习队列加载失败，请稍后重试。';
+  }
+
+  if (normalized.includes('card')) {
+    return '卡片数据加载失败，请稍后重试。';
+  }
+
+  return '发生未知错误，请稍后重试。';
+};
+
+export default function StudySession({ mode, onBack, initialGuestAcknowledged = false }: StudySessionProps) {
   const { user } = useUser();
   const [cards, setCards] = useState<StudySessionCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,6 +62,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
   const [baseDailyGoal, setBaseDailyGoal] = useState(20);
   const [dailyLimit, setDailyLimit] = useState(20);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [guestAcknowledged, setGuestAcknowledged] = useState(() => Boolean(user) || initialGuestAcknowledged);
   const [showGoalCompleteModal, setShowGoalCompleteModal] = useState(false);
   const [cardStartTime, setCardStartTime] = useState<number>(Date.now());
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -48,6 +76,9 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
     offline: false,
     unsyncedData: false,
   });
+
+  const initialPromptShownRef = useRef(false);
+  const isReadOnlyMode = mode === 'review' || mode === 'browse';
 
   const persistDailyLimit = useCallback((limit: number) => {
     if (typeof window === 'undefined' || !user) return;
@@ -111,6 +142,28 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
     return () => clearInterval(interval);
   }, [updateSyncStatus]);
 
+  useEffect(() => {
+    if (user) {
+      if (!guestAcknowledged) {
+        setGuestAcknowledged(true);
+      }
+      if (showLoginPrompt) {
+        setShowLoginPrompt(false);
+      }
+      return;
+    }
+
+    if (initialGuestAcknowledged && !guestAcknowledged) {
+      setGuestAcknowledged(true);
+      return;
+    }
+
+    if (!guestAcknowledged && !initialPromptShownRef.current) {
+      initialPromptShownRef.current = true;
+      setShowLoginPrompt(true);
+    }
+  }, [user, guestAcknowledged, showLoginPrompt, initialGuestAcknowledged]);
+
   const handleBackWithSync = async () => {
     if (!user || !sessionId) {
       onBack();
@@ -140,6 +193,36 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
   const loadCards = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
+      const guestMode = !user;
+
+      if (guestMode && (mode === 'study' || mode === 'review')) {
+        const guestLimit = mode === 'review'
+          ? 40
+          : Math.max(20, dailyLimit + 10);
+        const response = await fetch(`/api/cards?limit=${guestLimit}`);
+        const result = await response.json();
+
+        if (result.success) {
+          const guestCards: StudySessionCard[] = (result.data ?? []).map((card: GrammarCard) => ({
+            ...card,
+            __meta: {
+              type: mode === 'review' ? 'review' : 'new',
+              progress: null,
+            },
+          }));
+
+          setCards(guestCards);
+          setCurrentIndex(0);
+          setShowAnswer(false);
+          setCardStartTime(Date.now());
+        } else {
+          setError(localizeErrorMessage(result.error));
+        }
+
+        return;
+      }
+
       if (mode === "study" || mode === "review") {
         const settings = userSettingsManager.getSrsSettings();
         const requestLimit = Math.max(dailyLimit - studiedToday, 1) + 10;
@@ -156,7 +239,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
           setShowAnswer(false);
           setCardStartTime(Date.now());
         } else {
-          setError(result.error ?? 'Unable to load study queue');
+          setError(localizeErrorMessage(result.error));
         }
       } else {
         const response = await fetch('/api/cards');
@@ -168,16 +251,16 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
           setShowAnswer(false);
           setCardStartTime(Date.now());
         } else {
-          setError(result.error);
+          setError(localizeErrorMessage(result.error));
         }
       }
     } catch (err) {
-      setError("Failed to load cards");
+      setError(localizeErrorMessage(err instanceof Error ? err.message : null));
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [mode, dailyLimit, studiedToday]);
+  }, [mode, dailyLimit, studiedToday, user]);
 
   useEffect(() => {
     if (hasPerformedInitialLoadRef.current && lastLoadedModeRef.current === mode) {
@@ -206,16 +289,16 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
           handleNext();
           break;
         case "0":
-          if (showAnswer) handleAnswer(0);
+          if (showAnswer && !isReadOnlyMode) handleAnswer(0);
           break;
         case "1":
-          if (showAnswer) handleAnswer(1);
+          if (showAnswer && !isReadOnlyMode) handleAnswer(1);
           break;
         case "2":
-          if (showAnswer) handleAnswer(2);
+          if (showAnswer && !isReadOnlyMode) handleAnswer(2);
           break;
         case "3":
-          if (showAnswer) handleAnswer(3);
+          if (showAnswer && !isReadOnlyMode) handleAnswer(3);
           break;
         case "Escape":
           handleBackWithSync();
@@ -231,8 +314,21 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
   const handleAnswer = async (grade: number) => {
     if (!cards[currentIndex]) return;
 
+    if (isReadOnlyMode) {
+      return;
+    }
+
     if (studiedToday >= dailyLimit) {
       setShowGoalCompleteModal(true);
+      return;
+    }
+
+    if (!user) {
+      if (!guestAcknowledged) {
+        setShowLoginPrompt(true);
+        return;
+      }
+      handleNext(studiedToday, dailyLimit);
       return;
     }
 
@@ -242,33 +338,29 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
       Math.round((Date.now() - cardStartTime) / 1000)
     );
 
-    if (user) {
-      // Save locally instantly - no server call during study
-      optimizedStorage.saveCardProgressLocally(
-        cards[currentIndex].id,
-        grade,
-        studyTimeForCard
-      );
+    // Save locally instantly - no server call during study
+    optimizedStorage.saveCardProgressLocally(
+      cards[currentIndex].id,
+      grade,
+      studyTimeForCard
+    );
 
-      // Update UI immediately
-      const progress = optimizedStorage.getTodayProgress();
-      setStudiedToday(progress.studied);
-      updateSyncStatus();
+    // Update UI immediately
+    const progress = optimizedStorage.getTodayProgress();
+    setStudiedToday(progress.studied);
+    updateSyncStatus();
 
-      // Check if current allowance is used up
-      if (progress.studied >= dailyLimit && (progress.studied - 1) < dailyLimit) {
-        setShowGoalCompleteModal(true);
-      } else {
-        handleNext(progress.studied, dailyLimit);
-      }
+    // Check if current allowance is used up
+    if (progress.studied >= dailyLimit && (progress.studied - 1) < dailyLimit) {
+      setShowGoalCompleteModal(true);
     } else {
-      // Show login prompt for guest users
-      setShowLoginPrompt(true);
+      handleNext(progress.studied, dailyLimit);
     }
   };
 
   const handleContinueWithoutSaving = () => {
     setShowLoginPrompt(false);
+    setGuestAcknowledged(true);
     handleNext(studiedToday, dailyLimit);
   };
 
@@ -293,7 +385,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
     const checkCount = typeof futureStudiedCount === 'number' ? futureStudiedCount : studiedToday;
     const limit = typeof futureLimit === 'number' ? futureLimit : dailyLimit;
 
-    if (checkCount >= limit) {
+    if (!isReadOnlyMode && checkCount >= limit) {
       setShowGoalCompleteModal(true);
       return;
     }
@@ -333,7 +425,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
         <div className="text-center max-w-md mx-auto">
           <div className="bg-red-200 rounded-xl p-8 shadow-xl border-l-6 border-red-400">
             <div className="text-red-600 text-6xl mb-4">😅</div>
-            <div className="text-red-900 text-xl font-bold mb-4">Error: {error}</div>
+            <div className="text-red-900 text-xl font-bold mb-4">错误：{error}</div>
             <button
               onClick={onBack}
               className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors shadow-md"
@@ -375,11 +467,11 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 text-amber-900">
       <header className="sticky top-0 z-40 border-b border-amber-200/70 bg-amber-50/90 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-4 px-4 py-4">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:flex-wrap sm:items-center">
           <button
             onClick={handleBackWithSync}
             disabled={isExiting}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white/80 px-3 py-2 text-sm font-medium text-amber-700 shadow-sm transition-colors hover:bg-white disabled:opacity-60"
+            className="inline-flex items-center gap-2 self-start rounded-full border border-amber-200 bg-white/80 px-3 py-2 text-sm font-medium text-amber-700 shadow-sm transition-colors hover:bg-white disabled:opacity-60 sm:self-auto"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -387,7 +479,7 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
             {isExiting ? "同步中..." : "返回"}
           </button>
 
-          <div className="min-w-[220px] flex-1">
+          <div className="w-full flex-1 sm:min-w-[220px]">
             <div className="flex items-center gap-2 text-sm font-semibold text-amber-900">
               <span className="text-lg">
                 {mode === "study" ? "📚" : mode === "review" ? "🔄" : "📖"}
@@ -395,34 +487,48 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
               <span>{mode === "study" ? "学习模式" : mode === "review" ? "复习模式" : "浏览模式"}</span>
             </div>
             <div className="mt-1 flex flex-wrap items-baseline justify-between text-xs text-amber-700">
-              <span>今日 {studiedToday} / {dailyLimit} 张</span>
               <span>当前第 {currentIndex + 1} / {cards.length} 张</span>
+              {isReadOnlyMode ? (
+                <span className="font-medium text-amber-700">此模式不记录今日进度</span>
+              ) : (
+                <span>今日 {studiedToday} / {dailyLimit} 张</span>
+              )}
             </div>
-            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-amber-100">
-              <div
-                className="h-full rounded-full bg-amber-500 transition-all"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
-            {dailyLimit > baseDailyGoal && (
-              <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-[11px] font-medium text-amber-700">
-                <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                额外解锁 {dailyLimit - baseDailyGoal} 张
-              </div>
+            {!isReadOnlyMode && (
+              <>
+                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-amber-100">
+                  <div
+                    className="h-full rounded-full bg-amber-500 transition-all"
+                    style={{ width: `${progressPercent}%` }}
+                  ></div>
+                </div>
+                {dailyLimit > baseDailyGoal && (
+                  <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-[11px] font-medium text-amber-700">
+                    <span className="h-2 w-2 rounded-full bg-amber-400"></span>
+                    额外解锁 {dailyLimit - baseDailyGoal} 张
+                  </div>
+                )}
+              </>
             )}
           </div>
 
-          <div className="flex flex-col items-end gap-1 text-xs text-amber-600">
-            <span className={`font-medium ${studiedToday >= dailyLimit ? "text-green-700" : "text-amber-700"}`}>
-              {studiedToday >= dailyLimit ? "今日目标已完成 🎉" : `还差 ${goalRemaining} 张`}
-            </span>
-            {syncStatus.offline && (
+          <div className="flex flex-col items-start gap-1 text-xs text-amber-600 sm:items-end">
+            {isReadOnlyMode ? (
+              <span className="font-medium text-amber-700">
+                {mode === 'review' ? '复习模式（仅查看答案）' : '浏览模式（仅查看答案）'}
+              </span>
+            ) : (
+              <span className={`font-medium ${studiedToday >= dailyLimit ? "text-green-700" : "text-amber-700"}`}>
+                {studiedToday >= dailyLimit ? "今日目标已完成 🎉" : `还差 ${goalRemaining} 张`}
+              </span>
+            )}
+            {!isReadOnlyMode && syncStatus.offline && (
               <span className="flex items-center gap-1 text-orange-600">
                 <span className="h-2 w-2 rounded-full bg-orange-500"></span>
                 离线待同步
               </span>
             )}
-            {!syncStatus.offline && syncStatus.unsyncedData && (
+            {!isReadOnlyMode && !syncStatus.offline && syncStatus.unsyncedData && (
               <span className="flex items-center gap-1 text-blue-600">
                 <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
                 有待同步数据
@@ -433,21 +539,23 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
       </header>
 
       <main className="w-full flex-1">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 pt-6 pb-32">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4 px-3 pt-4 pb-40 sm:gap-6 sm:px-4 sm:pt-6 sm:pb-32">
           <StudyCard
             card={currentCard}
             onAnswer={handleAnswer}
             onNext={handleNext}
             showAnswer={showAnswer}
             onToggleAnswer={() => setShowAnswer(!showAnswer)}
-            footerOffset={showAnswer ? 180 : 140}
+            mode={mode}
+            readOnly={isReadOnlyMode}
+            footerOffset={showAnswer ? (isReadOnlyMode ? 220 : 200) : 160}
           />
 
-          <div className="flex w-full max-w-3xl items-center justify-between gap-4 text-sm text-amber-700">
+          <div className="flex w-full max-w-3xl flex-col items-stretch gap-3 text-sm text-amber-700 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <button
               onClick={handlePrevious}
               disabled={currentIndex === 0}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white/80 px-4 py-2 font-medium transition hover:bg-white disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-white/80 px-4 py-2 font-medium transition hover:bg-white disabled:opacity-60 sm:w-auto"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -457,14 +565,14 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
 
             <div className="flex flex-col items-center text-xs text-amber-600">
               <span>总卡片 {cards.length}</span>
-              <span>今日已答 {studiedToday} 张</span>
+              <span>{isReadOnlyMode ? '仅查看，不计入统计' : `今日已答 ${studiedToday} 张`}</span>
             </div>
 
             <button
               onClick={() => handleNext()}
               disabled={currentIndex === cards.length - 1 || studiedToday >= dailyLimit}
               title={studiedToday >= dailyLimit ? '今日学习上限已达成' : undefined}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white/80 px-4 py-2 font-medium transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-white/80 px-4 py-2 font-medium transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
             >
               下一张
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -478,14 +586,16 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
               <span>⌨️ 键盘快捷键</span>
               <span className="text-xs text-amber-500">Space / 数字键 / Esc</span>
             </summary>
-            <div className="grid grid-cols-2 gap-3 px-4 pb-4 text-sm text-amber-700 sm:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 px-4 pb-4 text-sm text-amber-700 sm:grid-cols-2 lg:grid-cols-4">
               <div className="rounded-lg bg-amber-100 px-3 py-2 text-center">
                 <span className="block font-mono text-xs font-semibold uppercase text-amber-700">Space</span>
                 <span className="text-xs">显示/隐藏答案</span>
               </div>
               <div className="rounded-lg bg-amber-100 px-3 py-2 text-center">
                 <span className="block font-mono text-xs font-semibold uppercase text-amber-700">0-3</span>
-                <span className="text-xs">答题评分</span>
+                <span className="text-xs">
+                  {isReadOnlyMode ? '当前模式不可用' : '答题评分'}
+                </span>
               </div>
               <div className="rounded-lg bg-amber-100 px-3 py-2 text-center">
                 <span className="block font-mono text-xs font-semibold uppercase text-amber-700">← →</span>
@@ -576,8 +686,23 @@ export default function StudySession({ mode, onBack }: StudySessionProps) {
       {/* Login Prompt Modal */}
       <LoginPrompt
         isOpen={showLoginPrompt}
-        onClose={() => setShowLoginPrompt(false)}
+        onClose={() => {
+          setShowLoginPrompt(false);
+          setGuestAcknowledged(true);
+        }}
         onContinueWithoutSaving={handleContinueWithoutSaving}
+        allowGuestContinue={!user}
+        title="登录后可同步学习进度"
+        description="登录账号即可在多设备之间同步保存学习进度、复习节奏和统计数据。未登录也可以先体验全部功能。"
+        icon="🔐"
+        continueLabel="暂不登录，继续体验"
+        cancelLabel="稍后提醒我"
+        benefits={[
+          '多设备自动同步学习进度',
+          '完整的学习统计与复习记录',
+          '自定义学习设置云端备份',
+          '离线学习后自动补同步',
+        ]}
       />
     </div>
   );

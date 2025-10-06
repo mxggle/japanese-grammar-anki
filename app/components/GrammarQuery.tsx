@@ -190,7 +190,7 @@ export default function GrammarQuery({ onBack }: GrammarQueryProps) {
                 )}
               </div>
               <div className="text-sm text-gray-500">
-                Level: {selectedCard.level || "N2"}
+                等级：{selectedCard.level || "N2"}
               </div>
             </div>
 

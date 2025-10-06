@@ -88,7 +88,7 @@ export default function StatsDisplay({ onClose }: StatsDisplayProps) {
       return () => clearInterval(syncStatusInterval);
     } else {
       // User is not logged in, show appropriate message
-      setError('Please sign in to view your statistics');
+      setError('请登录后查看学习统计');
       setLoading(false);
     }
   }, [user]);
@@ -170,7 +170,7 @@ export default function StatsDisplay({ onClose }: StatsDisplayProps) {
 
     } catch (error) {
       console.error('Error loading stats:', error);
-      setError('Failed to load statistics. Please try again.');
+      setError('统计数据加载失败，请稍后重试。');
     } finally {
       setLoading(false);
     }
@@ -181,7 +181,7 @@ export default function StatsDisplay({ onClose }: StatsDisplayProps) {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-          <p className="text-indigo-700">Loading statistics...</p>
+          <p className="text-indigo-700">统计数据加载中...</p>
         </div>
       </div>
     );
@@ -194,22 +194,22 @@ export default function StatsDisplay({ onClose }: StatsDisplayProps) {
           <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">📊</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Sign In Required</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">需要登录</h2>
           <p className="text-gray-600 mb-6">
-            Please sign in to view your learning statistics and progress tracking.
+            请登录以查看完整的学习统计与进度追踪信息。
           </p>
           <div className="space-y-3">
             <button
               onClick={() => window.location.href = '/sign-in'}
               className="w-full px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
             >
-              Sign In to View Stats
+              登录查看统计
             </button>
             <button
               onClick={onClose}
               className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
             >
-              Back to Menu
+              返回主菜单
             </button>
           </div>
         </div>
