@@ -465,80 +465,86 @@ export default function StudySession({ mode, onBack, initialGuestAcknowledged = 
   const isCustomExtraValid = !Number.isNaN(parsedCustomExtra) && parsedCustomExtra > 0;
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 text-amber-900">
-      <header className="sticky top-0 z-40 border-b border-amber-200/70 bg-amber-50/90 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:flex-wrap sm:items-center">
-          <button
-            onClick={handleBackWithSync}
-            disabled={isExiting}
-            className="inline-flex items-center gap-2 self-start rounded-full border border-amber-200 bg-white/80 px-3 py-2 text-sm font-medium text-amber-700 shadow-sm transition-colors hover:bg-white disabled:opacity-60 sm:self-auto"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            {isExiting ? "同步中..." : "返回"}
-          </button>
-
-          <div className="w-full flex-1 sm:min-w-[220px]">
-            <div className="flex items-center gap-2 text-sm font-semibold text-amber-900">
-              <span className="text-lg">
-                {mode === "study" ? "📚" : mode === "review" ? "🔄" : "📖"}
-              </span>
-              <span>{mode === "study" ? "学习模式" : mode === "review" ? "复习模式" : "浏览模式"}</span>
+    <div className="flex min-h-screen flex-col bg-[#faf6eb] text-amber-900">
+      <header className="sticky top-0 z-40 border-b border-amber-200/70 bg-[#faf6eb]/95 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-4">
+          <div className="flex w-full flex-wrap items-center gap-2">
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <button
+                onClick={handleBackWithSync}
+                disabled={isExiting}
+                className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-white/80 px-3 py-2 text-xs font-medium text-amber-700 shadow-sm transition-colors hover:bg-white disabled:opacity-60 sm:gap-2 sm:text-sm"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                {isExiting ? "同步中..." : "返回"}
+              </button>
+              <div className="flex items-center gap-2 text-sm font-semibold text-amber-900 sm:text-base">
+                <span className="text-base sm:text-lg">
+                  {mode === "study" ? "📚" : mode === "review" ? "🔄" : "📖"}
+                </span>
+                <span className="truncate">
+                  {mode === "study" ? "学习模式" : mode === "review" ? "复习模式" : "浏览模式"}
+                </span>
+              </div>
             </div>
-            <div className="mt-1 flex flex-wrap items-baseline justify-between text-xs text-amber-700">
-              <span>当前第 {currentIndex + 1} / {cards.length} 张</span>
+            <div className="flex items-center gap-2 text-[11px] text-amber-600 sm:text-xs">
               {isReadOnlyMode ? (
-                <span className="font-medium text-amber-700">此模式不记录今日进度</span>
+                <span className="font-medium text-amber-700">
+                  {mode === 'review' ? '复习模式（仅查看答案）' : '浏览模式（仅查看答案）'}
+                </span>
               ) : (
-                <span>今日 {studiedToday} / {dailyLimit} 张</span>
+                <span className={`font-medium ${studiedToday >= dailyLimit ? "text-green-700" : "text-amber-700"}`}>
+                  {studiedToday >= dailyLimit ? "今日目标已完成 🎉" : `还差 ${goalRemaining} 张`}
+                </span>
               )}
             </div>
-            {!isReadOnlyMode && (
-              <>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-amber-100">
-                  <div
-                    className="h-full rounded-full bg-amber-500 transition-all"
-                    style={{ width: `${progressPercent}%` }}
-                  ></div>
-                </div>
-                {dailyLimit > baseDailyGoal && (
-                  <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-[11px] font-medium text-amber-700">
-                    <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                    额外解锁 {dailyLimit - baseDailyGoal} 张
-                  </div>
-                )}
-              </>
+          </div>
+
+          <div className="flex w-full flex-wrap items-center justify-between text-[11px] text-amber-700 sm:text-xs">
+            <span>当前第 {currentIndex + 1} / {cards.length} 张</span>
+            {isReadOnlyMode ? (
+              <span>此模式不记录今日进度</span>
+            ) : (
+              <span>今日 {studiedToday} / {dailyLimit} 张</span>
             )}
           </div>
 
-          <div className="flex flex-col items-start gap-1 text-xs text-amber-600 sm:items-end">
-            {isReadOnlyMode ? (
-              <span className="font-medium text-amber-700">
-                {mode === 'review' ? '复习模式（仅查看答案）' : '浏览模式（仅查看答案）'}
-              </span>
-            ) : (
-              <span className={`font-medium ${studiedToday >= dailyLimit ? "text-green-700" : "text-amber-700"}`}>
-                {studiedToday >= dailyLimit ? "今日目标已完成 🎉" : `还差 ${goalRemaining} 张`}
-              </span>
-            )}
-            {!isReadOnlyMode && syncStatus.offline && (
-              <span className="flex items-center gap-1 text-orange-600">
-                <span className="h-2 w-2 rounded-full bg-orange-500"></span>
-                离线待同步
-              </span>
-            )}
-            {!isReadOnlyMode && !syncStatus.offline && syncStatus.unsyncedData && (
-              <span className="flex items-center gap-1 text-blue-600">
-                <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-                有待同步数据
-              </span>
-            )}
-          </div>
+          {!isReadOnlyMode && (
+            <>
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-amber-100 sm:h-2">
+                <div
+                  className="h-full rounded-full bg-amber-500 transition-all"
+                  style={{ width: `${progressPercent}%` }}
+                ></div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-[11px] text-amber-600 sm:text-xs">
+                {dailyLimit > baseDailyGoal && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 font-medium text-amber-700">
+                    <span className="h-2 w-2 rounded-full bg-amber-400"></span>
+                    额外解锁 {dailyLimit - baseDailyGoal} 张
+                  </span>
+                )}
+                {syncStatus.offline && (
+                  <span className="flex items-center gap-1 text-orange-600">
+                    <span className="h-2 w-2 rounded-full bg-orange-500"></span>
+                    离线待同步
+                  </span>
+                )}
+                {!syncStatus.offline && syncStatus.unsyncedData && (
+                  <span className="flex items-center gap-1 text-blue-600">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    有待同步数据
+                  </span>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </header>
 
-      <main className="w-full flex-1">
+      <main className="w-full flex-1 pt-2 sm:pt-4">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4 px-3 pt-4 pb-40 sm:gap-6 sm:px-4 sm:pt-6 sm:pb-32">
           <StudyCard
             card={currentCard}
